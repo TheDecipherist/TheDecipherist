@@ -1,0 +1,65 @@
+@layer layout;
+
+@layer layout {
+  /* ─── Base section ─── */
+  .section {
+    position: relative;
+    padding-block: var(--section-pad-y);
+    overflow: hidden;
+  }
+
+  .section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .section > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── Section backgrounds ─── */
+  .section--void   { background: var(--color-void); }
+  .section--space  { background: var(--color-space); }
+  .section--surface{ background: var(--color-surface); }
+
+  /* ─── Section heading ─── */
+  .section__heading {
+    font-size: var(--text-h2);
+    margin-bottom: var(--space-16);
+    text-align: center;
+  }
+
+  .section__subheading {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: calc(-1 * var(--space-12));
+    margin-bottom: var(--space-16);
+    max-width: 60ch;
+    margin-inline: auto;
+  }
+
+  /* ─── Category label ─── */
+  .category-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-teal);
+    margin-bottom: var(--space-4);
+  }
+
+  .category-label::before {
+    content: '//';
+    opacity: 0.5;
+  }
+}

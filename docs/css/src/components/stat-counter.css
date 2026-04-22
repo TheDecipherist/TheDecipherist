@@ -1,0 +1,62 @@
+@layer components;
+
+@layer components {
+  /* ─── Stats section ─── */
+  .section--stats {
+    background: var(--color-space);
+    padding-block: var(--section-pad-y);
+  }
+
+  /* ─── Stat items ─── */
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    /* Gradient text */
+    background: linear-gradient(
+      in oklch 135deg,
+      var(--color-teal),
+      var(--color-violet)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Scroll-driven counter */
+    animation: count-up linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 60%;
+    counter-reset: stat-count var(--count-val);
+  }
+
+  .stat-number span {
+    /* Static fallback text — shown when CSS counters aren't supported */
+    display: inline;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    max-width: 14ch;
+  }
+
+  /* Reveal animation for stat items */
+  .stat-item {
+    animation: stat-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+    animation-delay: calc(sibling-index() * 60ms);
+  }
+}

@@ -1,0 +1,78 @@
+@layer components;
+
+@layer components {
+  /* ─── Section wave dividers via clip-path: shape() ─── */
+  /* Each section gets a unique profile. Negative margin-bottom creates overlap. */
+
+  .section--hero {
+    clip-path: shape(
+      from 0% 0%,
+      hline to 100%,
+      vline to 92%,
+      curve to 0% 100% with 30% 86%, 70% 106%
+    );
+    margin-bottom: -4rem;
+    padding-bottom: 8rem;
+  }
+
+  .section--stats {
+    clip-path: shape(
+      from 0% 4%,
+      curve to 100% 0% with 40% 8%, 60% -2%,
+      vline to 93%,
+      curve to 0% 100% with 25% 88%, 75% 100%
+    );
+    margin-bottom: -4rem;
+    padding-bottom: 8rem;
+  }
+
+  .section--articles {
+    clip-path: shape(
+      from 0% 3%,
+      curve to 100% 0% with 20% 6%, 80% -1%,
+      vline to 94%,
+      curve to 0% 100% with 60% 90%, 20% 106%
+    );
+    margin-bottom: -4rem;
+    padding-bottom: 8rem;
+  }
+
+  .section--projects {
+    clip-path: shape(
+      from 0% 2%,
+      curve to 100% 0% with 50% 7%, 75% -2%,
+      vline to 95%,
+      curve to 0% 100% with 70% 89%, 30% 102%
+    );
+    margin-bottom: -4rem;
+    padding-bottom: 8rem;
+  }
+
+  .section--about {
+    clip-path: shape(
+      from 0% 4%,
+      curve to 100% 1% with 35% 9%, 65% -1%,
+      vline to 96%,
+      curve to 0% 100% with 40% 91%, 80% 103%
+    );
+    padding-bottom: 8rem;
+  }
+
+  /* Hero wave breathes on scroll */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes wave-breathe {
+      50% {
+        clip-path: shape(
+          from 0% 0%,
+          hline to 100%,
+          vline to 90%,
+          curve to 0% 100% with 35% 84%, 65% 108%
+        );
+      }
+    }
+
+    .section--hero {
+      animation: wave-breathe 7s ease-in-out infinite;
+    }
+  }
+}

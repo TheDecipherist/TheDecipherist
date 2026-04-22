@@ -1,0 +1,148 @@
+@layer components;
+
+@layer components {
+  /* ─── Cipher section ─── */
+  .section--cipher {
+    background: var(--color-void);
+    position: relative;
+  }
+
+  /* Cipher grid paint worklet background */
+  .section--cipher-hero {
+    background-image: paint(cipher-grid);
+    --grid-color: oklch(0.78 0.15 196);
+    --grid-opacity: 0.06;
+    --cell-size: 28px;
+    --symbol-density: 0.7;
+  }
+
+  /* ─── Cipher timeline ─── */
+  .cipher-timeline {
+    position: relative;
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  /* Vertical connector line */
+  .cipher-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(
+      in oklch to bottom,
+      transparent,
+      var(--color-teal),
+      var(--color-violet),
+      transparent
+    );
+  }
+
+  /* ─── Cipher entry ─── */
+  .cipher-entry {
+    position: relative;
+    padding-left: var(--space-12);
+    padding-bottom: var(--space-12);
+    /* Scroll-driven reveal */
+    animation: card-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+  /* Timeline dot */
+  .cipher-entry::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: var(--space-3);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-teal);
+    box-shadow: 0 0 12px oklch(0.78 0.15 196 / 0.6);
+  }
+
+  .cipher-entry__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .cipher-entry__id {
+    font-family: var(--font-mono);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-teal);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .cipher-entry__name {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--color-text);
+    flex: 1;
+  }
+
+  /* SOLVED badge using <mark> */
+  mark.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-void);
+    background: var(--color-teal);
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  mark.badge--violet {
+    background: var(--color-violet);
+    color: var(--color-text);
+  }
+
+  /* Metadata dl */
+  .cipher-entry__meta {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-2) var(--space-6);
+    margin-block: var(--space-4);
+    font-size: var(--text-small);
+  }
+
+  .cipher-entry__meta dt {
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .cipher-entry__meta dd {
+    color: var(--color-text);
+  }
+
+  .cipher-entry__description {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .cipher-entry__result {
+    margin-top: var(--space-4);
+    padding: var(--space-4) var(--space-6);
+    border-left: 2px solid var(--color-teal);
+    font-family: var(--font-mono);
+    font-size: var(--text-mono);
+    color: var(--color-teal);
+    background: oklch(from var(--color-teal) l c h / 0.05);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+}

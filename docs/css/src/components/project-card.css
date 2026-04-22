@@ -1,0 +1,146 @@
+@layer components;
+
+@layer components {
+  /* ─── Projects section ─── */
+  .section--projects {
+    background: var(--color-space);
+  }
+
+  /* ─── Project card ─── */
+  .project-card {
+    position: relative;
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    /* 3D tilt via CSS custom properties driven by JS */
+    transform-style: preserve-3d;
+    transform: perspective(1000px)
+      rotateX(var(--tilt-x, 0deg))
+      rotateY(var(--tilt-y, 0deg));
+    transition: transform 0.1s ease-out, box-shadow var(--transition-base);
+    /* Scroll-driven reveal */
+    animation: card-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+    animation-delay: calc(sibling-index() * 60ms);
+  }
+
+  /* Gradient border */
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      in oklch var(--border-angle),
+      oklch(0.38 0.18 248 / 0.5),
+      oklch(0.42 0.22 292 / 0.3),
+      oklch(0.78 0.15 196 / 0.4)
+    );
+    -webkit-mask:
+      linear-gradient(oklch(1 0 0) 0 0) content-box,
+      linear-gradient(oklch(1 0 0) 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .project-card:hover {
+    box-shadow: 0 24px 64px oklch(0 0 0 / 0.4);
+  }
+
+  /* Project image area */
+  .project-card__media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--color-space);
+  }
+
+  .project-card__media picture,
+  .project-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .project-card:hover .project-card__media img {
+    transform: scale(1.05);
+  }
+
+  /* Image placeholder gradient */
+  .project-card__media-fallback {
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(ellipse at 30% 40%, oklch(0.38 0.18 248 / 0.5) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 60%, oklch(0.42 0.22 292 / 0.3) 0%, transparent 60%),
+      var(--color-space);
+  }
+
+  /* Project content */
+  .project-card__content {
+    padding: var(--space-6);
+  }
+
+  .project-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .project-card__description {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: var(--space-6);
+  }
+
+  .project-card__links {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .project-card__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.05em;
+    color: var(--color-teal);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition: opacity var(--transition-fast);
+  }
+
+  .project-card__link:hover {
+    opacity: 0.7;
+  }
+
+  /* Detail panel with @starting-style entry */
+  .project-detail {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    display: none;
+    padding: var(--space-6);
+    background: var(--color-surface-2);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-detail[data-open="true"] {
+    display: block;
+  }
+
+  @starting-style {
+    .project-detail[data-open="true"] {
+      opacity: 0;
+      transform: translateY(1.5rem) scale(0.97);
+    }
+  }
+}

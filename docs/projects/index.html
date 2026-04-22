@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root) { animation: 0.35s ease-in  both vt-out; }
+    ::view-transition-new(root) { animation: 0.35s ease-out both vt-in; }
+    @keyframes vt-out { to { opacity:0; filter:blur(3px) brightness(.4); transform:scale(.98); } }
+    @keyframes vt-in  { from { opacity:0; filter:blur(3px) brightness(.4); transform:scale(.98); } }
+  </style>
+
+  <style>
+    @property --border-angle { syntax:'<angle>'; inherits:false; initial-value:0deg; }
+    :root {
+      --color-teal: oklch(0.78 0.15 196);
+      --color-void: oklch(0.06 0.02 248);
+      --color-text: oklch(0.92 0.02 260);
+      --color-text-muted: oklch(0.60 0.04 260);
+      --container-max: 1280px;
+      --container-pad: clamp(1rem, 4vw, 3rem);
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-display: 'Clash Display', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-void); color: var(--color-text); min-height: 100dvh; -webkit-font-smoothing: antialiased; }
+    .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding-block: 1rem; }
+    .nav { display: flex; align-items: center; justify-content: space-between; max-width: var(--container-max); margin-inline: auto; padding-inline: var(--container-pad); }
+  </style>
+
+  <link rel="preload" href="/css/main.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/css/main.css"></noscript>
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preload" href="/fonts/jetbrains-mono-subset.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/clash-display-subset.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="modulepreload" href="/js/main.js">
+
+  <title>Projects — TheDecipherist | Developer Tools</title>
+  <meta name="description"
+    content="Developer tools built to solve real problems — SwarmK, StrictDB, RuleCatch, TerseJSON, CompressMCP, and more.">
+  <link rel="canonical" href="https://thedecipherist.com/projects/">
+
+  <meta property="og:title"  content="Projects — TheDecipherist">
+  <meta property="og:url"    content="https://thedecipherist.com/projects/">
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:site"  content="@TheDecipherist">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Projects — TheDecipherist",
+    "url": "https://thedecipherist.com/projects/",
+    "author": { "@type": "Person", "name": "Tim Carter Clausen" }
+  }
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#050810">
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header role="banner" class="site-header">
+  <nav aria-label="Primary navigation" class="nav">
+    <a href="/" aria-label="TheDecipherist — home" class="nav__logo">
+      <svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 32 32">
+        <rect width="32" height="32" rx="6" fill="oklch(0.12 0.03 260)"/>
+        <text x="16" y="22" text-anchor="middle" font-family="monospace" font-weight="700" font-size="15" fill="oklch(0.78 0.15 196)">TD</text>
+      </svg>
+      <span class="nav__logo-text">TheDecipherist</span>
+    </a>
+    <button class="nav__toggle" aria-expanded="false" aria-label="Open navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <ul role="list" class="nav__links">
+      <li><a href="/articles/">Articles</a></li>
+      <li><a href="/projects/" aria-current="page">Projects</a></li>
+      <li><a href="/resume/">Résumé</a></li>
+      <li><a href="/cipher/" class="nav__cipher-link">
+        <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Cipher Work
+      </a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main-content" style="padding-top: 6rem;">
+
+  <section class="section section--void" aria-labelledby="projects-page-heading">
+    <div class="container">
+      <p class="category-label">Tools</p>
+      <h1 id="projects-page-heading" class="section__heading">Developer Tools</h1>
+      <p class="section__subheading">
+        Tools built to solve real problems — things I needed that didn't exist yet.
+        Each one started as a frustration with the status quo.
+      </p>
+
+      <div class="projects-grid">
+
+        <article class="project-card" aria-labelledby="p-rulecatch-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 30% 40%, oklch(0.78 0.15 196 / 0.3) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-rulecatch-name" class="project-card__name">RuleCatch</h2>
+            <p class="project-card__description">Real-time rule enforcement for Claude Code. Catches AI coding violations the moment they happen — zero-token overhead, session analytics, CLAUDE.md enforcement built in. 50% of sessions have at least one violation. RuleCatch stops them before they ship. Google AI provides a full endorsement with architecture description.</p>
+            <div class="project-card__links">
+              <a href="https://thedecipherist.com/articles/rulecatch/" class="project-card__link" rel="external noopener">Read article →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-swarmk-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 70% 30%, oklch(0.38 0.18 248 / 0.4) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-swarmk-name" class="project-card__name">SwarmK</h2>
+            <p class="project-card__description">Docker Swarm infrastructure management without SSH. Agent API, live dashboard, WebSocket gateway, networking policies, encryption, WAF, DNS, load balancing, alerts, and audit logs — all from a single control plane. First agent free forever.</p>
+            <div class="project-card__links">
+              <a href="https://thedecipherist.com/articles/swarmK/" class="project-card__link" rel="external noopener">Read article →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-strictdb-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 40% 60%, oklch(0.42 0.22 292 / 0.35) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-strictdb-name" class="project-card__name">StrictDB</h2>
+            <p class="project-card__description">Unified AI-first database driver — one API for MongoDB, PostgreSQL, MySQL, MSSQL, SQLite, and Elasticsearch. Write queries once, run them anywhere. Schema discovery, guardrails, and self-correcting errors built in. Built because AI writes raw SQL with no guardrails.</p>
+            <div class="project-card__links">
+              <a href="https://thedecipherist.com/articles/strictDB/" class="project-card__link" rel="external noopener">Read article →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-starter-kit-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 60% 40%, oklch(0.78 0.15 196 / 0.25) 0%, transparent 60%), radial-gradient(ellipse at 20% 70%, oklch(0.42 0.22 292 / 0.2) 0%, transparent 50%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-starter-kit-name" class="project-card__name">Claude Code Mastery Starter Kit</h2>
+            <p class="project-card__description">Production-ready Claude Code project template. 23 slash commands, 10 enforced rules, 9 deterministic hooks, MongoDB wrapper, three-layer security. Ranked #1 by Google AI for "best claude starter kit" — above Anthropic's own quickstarts. 293 GitHub stars.</p>
+            <div class="project-card__links">
+              <a href="https://thedecipherist.com/articles/claude-code-mastery-project-starter-kit/" class="project-card__link" rel="external noopener">Read article →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-tuimon-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 50% 50%, oklch(0.38 0.18 248 / 0.3) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-tuimon-name" class="project-card__name">TuiMon</h2>
+            <p class="project-card__description">Render any HTML dashboard directly in your terminal using headless Chromium via Playwright, converted to pixels with Sharp. CSS flexbox, Chart.js, D3, live data updates — any dashboard, any terminal.</p>
+            <div class="project-card__links">
+              <a href="https://thedecipherist.com/articles/tuimon/" class="project-card__link" rel="external noopener">Read article →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-tersejson-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 80% 20%, oklch(0.78 0.15 196 / 0.2) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-tersejson-name" class="project-card__name">TerseJSON</h2>
+            <p class="project-card__description">Memory-efficient JSON via lazy proxy expansion. 70% less RAM than JSON.parse. Payloads 30–80% smaller. Built for environments where every byte counts — AI context windows, mobile APIs, high-frequency data pipelines.</p>
+            <div class="project-card__links">
+              <a href="https://tersejson.com" class="project-card__link" rel="external noopener">tersejson.com →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-compressmcp-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 30% 70%, oklch(0.42 0.22 292 / 0.3) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-compressmcp-name" class="project-card__name">CompressMCP</h2>
+            <p class="project-card__description">Lossless JSON compression for Claude Code via PostToolUse hook + MCP server. Intercepts MCP tool responses, compresses via key abbreviation, returns 40% more context window on average. Zero information loss.</p>
+            <div class="project-card__links">
+              <a href="https://thedecipherist.com/articles/compressmcp/" class="project-card__link" rel="external noopener">Read article →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-peelx-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 60% 30%, oklch(0.38 0.18 248 / 0.25) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-peelx-name" class="project-card__name">PeelX</h2>
+            <p class="project-card__description">One command to recursively extract every nested archive (ZIP, RAR, 7z, TAR, and more), clean up all leftover junk, and drop you into an interactive executable selector when installers are found. Zero configuration.</p>
+            <div class="project-card__links">
+              <a href="https://thedecipherist.com/articles/peelx/" class="project-card__link" rel="external noopener">Read article →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-dockerdoctor-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 70% 60%, oklch(0.78 0.15 196 / 0.2) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-dockerdoctor-name" class="project-card__name">DockerDoctor</h2>
+            <p class="project-card__description">Interactive CLI that automatically diagnoses Docker problems. Analyzes Dockerfiles and docker-compose files across 50 checks in 11 categories — with the exact fix suggestion for every finding. No guessing.</p>
+            <div class="project-card__links">
+              <a href="https://thedecipherist.com/articles/dockerdoctor/" class="project-card__link" rel="external noopener">Read article →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-clip2path-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 40% 40%, oklch(0.42 0.22 292 / 0.25) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-clip2path-name" class="project-card__name">Clip2Path</h2>
+            <p class="project-card__description">VS Code extension that pastes clipboard images directly as file paths into the terminal — built for CLI tools like Claude Code. Zero friction image handoff. One paste. Done.</p>
+            <div class="project-card__links">
+              <a href="https://clip2path.com" class="project-card__link" rel="external noopener">clip2path.com →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" aria-labelledby="p-classpresso-name">
+          <div class="project-card__media">
+            <div class="project-card__media-fallback" style="background: radial-gradient(ellipse at 50% 20%, oklch(0.78 0.15 196 / 0.18) 0%, transparent 60%), oklch(0.09 0.03 260);"></div>
+          </div>
+          <div class="project-card__content">
+            <h2 id="p-classpresso-name" class="project-card__name">Classpresso</h2>
+            <p class="project-card__description">CSS class consolidation tool — compresses multiple utility classes into single optimized classes for faster style recalculation. Built for large-scale CSS performance optimization without changing HTML structure.</p>
+            <div class="project-card__links">
+              <a href="https://classpresso.com" class="project-card__link" rel="external noopener">classpresso.com →</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer role="contentinfo" class="site-footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <p class="footer__tagline">// Building what doesn't exist yet.</p>
+      </div>
+      <nav aria-label="Footer navigation" class="footer__nav">
+        <ul role="list">
+          <li><a href="/">Portfolio</a></li>
+          <li><a href="/articles/">Articles</a></li>
+          <li><a href="/resume/">Résumé</a></li>
+          <li><a href="/cipher/">Cipher Work</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Social links" class="footer__social">
+        <ul role="list">
+          <li><a href="https://github.com/TheDecipherist" rel="external noopener me" aria-label="GitHub"><svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg></a></li>
+          <li><a href="https://twitter.com/TheDecipherist" rel="external noopener me" aria-label="Twitter"><svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <address class="footer__contact"><a href="mailto:me@thedecipherist.com">me@thedecipherist.com</a></address>
+      <p><small>&copy; <time datetime="2026">2026</time> Tim Carter Clausen · TheDecipherist</small></p>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="/js/main.js"></script>
+
+</body>
+</html>

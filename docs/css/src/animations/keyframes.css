@@ -1,0 +1,105 @@
+@layer animations;
+
+@layer animations {
+  /* ─── Orb drift animations (hero mesh gradient) ─── */
+
+  @keyframes orb-1-drift {
+    0%   { --orb-x: 15%; --orb-y: 40%; --orb-hue: 196deg; }
+    50%  { --orb-x: 35%; --orb-y: 60%; --orb-hue: 210deg; }
+    100% { --orb-x: 15%; --orb-y: 40%; --orb-hue: 196deg; }
+  }
+
+  @keyframes orb-2-drift {
+    0%   { --orb-2-x: 70%; --orb-2-hue: 292deg; }
+    50%  { --orb-2-x: 85%; --orb-2-hue: 280deg; }
+    100% { --orb-2-x: 70%; --orb-2-hue: 292deg; }
+  }
+
+  /* ─── Text shimmer (hero headline + section titles) ─── */
+
+  @keyframes text-shimmer {
+    from { background-position: 0% 50%; }
+    to   { background-position: 100% 50%; }
+  }
+
+  /* ─── Gradient border spin (card hover) ─── */
+
+  @keyframes border-spin {
+    to { --border-angle: 495deg; }
+  }
+
+  /* ─── Scroll-driven: card reveal ─── */
+
+  @keyframes card-reveal {
+    from {
+      opacity: 0;
+      clip-path: inset(0 0 100% 0 round 12px);
+      transform: translateY(2rem);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0% 0 round 12px);
+      transform: translateY(0);
+    }
+  }
+
+  /* ─── Scroll-driven: section heading ─── */
+
+  @keyframes heading-rise {
+    from { opacity: 0; transform: translateY(3rem) skewY(2deg); }
+    to   { opacity: 1; transform: translateY(0) skewY(0deg); }
+  }
+
+  /* ─── Scroll-driven: fade + slide from left ─── */
+
+  @keyframes fade-in-left {
+    from { opacity: 0; transform: translateX(-1.5rem); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ─── Scroll-driven: stat counter ─── */
+
+  @keyframes count-up {
+    from { --count-val: 0; }
+    to   { --count-val: var(--count-target, 100); }
+  }
+
+  /* ─── Scroll indicator fade ─── */
+
+  @keyframes scroll-fade {
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+    50%       { opacity: 0.8; transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ─── Stat item rise ─── */
+
+  @keyframes stat-rise {
+    from { opacity: 0; transform: translateY(2rem); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── Page view transitions ─── */
+
+  @keyframes vt-out {
+    to {
+      opacity: 0;
+      filter: blur(3px) brightness(0.4);
+      transform: scale(0.98);
+    }
+  }
+
+  @keyframes vt-in {
+    from {
+      opacity: 0;
+      filter: blur(3px) brightness(0.4);
+      transform: scale(0.98);
+    }
+  }
+
+  /* ─── About section cipher decode hover effect ─── */
+
+  @keyframes cipher-decode {
+    0%   { --decode-progress: 0; }
+    100% { --decode-progress: 1; }
+  }
+}
