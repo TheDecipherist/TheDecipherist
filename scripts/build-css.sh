@@ -17,11 +17,11 @@ cat \
   docs/css/src/base/accessibility.css \
   docs/css/src/layout/grid.css \
   docs/css/src/layout/sections.css \
-  docs/css/src/components/nav.css \
   docs/css/src/components/hero.css \
   docs/css/src/components/stat-counter.css \
   docs/css/src/components/article-card.css \
   docs/css/src/components/project-card.css \
+  docs/css/src/components/repo-card.css \
   docs/css/src/components/wave-dividers.css \
   docs/css/src/components/cipher-timeline.css \
   docs/css/src/components/footer.css \

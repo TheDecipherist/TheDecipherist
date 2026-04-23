@@ -4,96 +4,104 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- View Transitions — page morphs -->
+  <!-- View Transitions, page morphs -->
   <style>
     @view-transition { navigation: auto; }
     ::view-transition-old(root) { animation: 0.35s ease-in  both vt-out; }
     ::view-transition-new(root) { animation: 0.35s ease-out both vt-in; }
-    @keyframes vt-out { to { opacity:0; filter:blur(3px) brightness(.4); transform:scale(.98); } }
-    @keyframes vt-in  { from { opacity:0; filter:blur(3px) brightness(.4); transform:scale(.98); } }
+    @keyframes vt-out { to   { opacity:0; filter:blur(3px) brightness(.5); transform:scale(.99); } }
+    @keyframes vt-in  { from { opacity:0; filter:blur(3px) brightness(.5); transform:scale(.99); } }
   </style>
 
-  <!-- CRITICAL CSS — hero renders with zero external requests -->
+  <!-- CRITICAL CSS, hero renders with zero external requests -->
   <style>
-    @property --orb-x { syntax:'<percentage>'; inherits:false; initial-value:20%; }
-    @property --orb-y { syntax:'<percentage>'; inherits:false; initial-value:50%; }
-    @property --orb-hue { syntax:'<angle>'; inherits:false; initial-value:196deg; }
-    @property --orb-2-x { syntax:'<percentage>'; inherits:false; initial-value:75%; }
-    @property --orb-2-hue { syntax:'<angle>'; inherits:false; initial-value:292deg; }
+    @property --orb-x   { syntax:'<percentage>'; inherits:false; initial-value:15%; }
+    @property --orb-y   { syntax:'<percentage>'; inherits:false; initial-value:40%; }
+    @property --orb-hue { syntax:'<angle>';      inherits:false; initial-value:145deg; }
+    @property --orb-2-x { syntax:'<percentage>'; inherits:false; initial-value:70%; }
+    @property --orb-2-hue { syntax:'<angle>';    inherits:false; initial-value:48deg; }
     @property --border-angle { syntax:'<angle>'; inherits:false; initial-value:0deg; }
+
     :root {
-      --color-teal: oklch(0.78 0.15 196);
-      --color-violet: oklch(0.42 0.22 292);
-      --color-void: oklch(0.06 0.02 248);
-      --color-text: oklch(0.92 0.02 260);
-      --color-text-muted: oklch(0.60 0.04 260);
-      --container-max: 1280px;
-      --container-pad: clamp(1rem, 4vw, 3rem);
-      --font-mono: 'JetBrains Mono', monospace;
+      --color-bg:       oklch(0.98 0.008 60);
+      --color-surface:  oklch(0.96 0.006 60);
+      --color-border:   oklch(0.88 0.010 60);
+      --color-void:     oklch(0.10 0.040 248);
+      --color-text:     oklch(0.14 0.040 248);
+      --color-text-muted: oklch(0.42 0.030 248);
+      --color-accent:   oklch(0.22 0.060 248);
+      --color-green:    oklch(0.72 0.200 145);
+      --container-max:  1280px;
+      --container-pad:  clamp(1.5rem, 5vw, 4rem);
+      --radius-full:    9999px;
+      --radius-lg:      20px;
+      --font-mono:    'JetBrains Mono', 'Cascadia Code', monospace;
       --font-display: 'Clash Display', system-ui, sans-serif;
-      --text-hero: clamp(3.5rem, 8vw, 8rem);
-      --text-h3: clamp(1.25rem, 2vw, 1.75rem);
+      --font-body:    system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @layer reset, tokens, base, layout, components, animations, utilities;
+    @layer reset { *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; } }
+
     html { scroll-behavior: smooth; }
-    body { background: var(--color-void); color: var(--color-text); min-height: 100dvh; -webkit-font-smoothing: antialiased; }
-    .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding-block: 1rem; }
-    .nav { display: flex; align-items: center; justify-content: space-between; max-width: var(--container-max); margin-inline: auto; padding-inline: var(--container-pad); }
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Hero, exact viewport height, no overflow */
     .section--hero {
-      min-height: 100dvh;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      animation: orb-1-drift 12s ease-in-out infinite, orb-2-drift 9s ease-in-out infinite;
-      background: radial-gradient(circle at var(--orb-x) var(--orb-y), oklch(0.35 0.28 var(--orb-hue)/.5) 0%, transparent 50%), radial-gradient(circle at var(--orb-2-x) 30%, oklch(0.30 0.24 var(--orb-2-hue)/.4) 0%, transparent 45%), radial-gradient(circle at 50% 80%, oklch(0.25 0.18 248/.3) 0%, transparent 55%), var(--color-void);
+      height: 100dvh;
+      position: relative;
+      overflow: hidden;
+      background: var(--color-void);
     }
-    @keyframes orb-1-drift { 0%,100%{--orb-x:15%;--orb-y:40%;--orb-hue:196deg} 50%{--orb-x:35%;--orb-y:60%;--orb-hue:210deg} }
-    @keyframes orb-2-drift { 0%,100%{--orb-2-x:70%;--orb-2-hue:292deg} 50%{--orb-2-x:85%;--orb-2-hue:280deg} }
-    .hero__headline {
-      font-family: var(--font-display);
-      font-size: var(--text-hero);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 0.95;
-      background: linear-gradient(in oklch 90deg, oklch(0.88 0.18 196), oklch(0.72 0.20 248), oklch(0.65 0.22 292));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      background-size: 200% 100%;
-      animation: text-shimmer 6s ease-in-out infinite alternate;
+
+    @keyframes orb-1-drift { 0%,100%{--orb-x:15%;--orb-y:40%;--orb-hue:145deg} 50%{--orb-x:35%;--orb-y:60%;--orb-hue:158deg} }
+    @keyframes orb-2-drift { 0%,100%{--orb-2-x:70%;--orb-2-hue:48deg} 50%{--orb-2-x:85%;--orb-2-hue:38deg} }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin-inline: auto;
+      padding-inline: var(--container-pad);
     }
-    @keyframes text-shimmer { from{background-position:0% 50%} to{background-position:100% 50%} }
   </style>
 
-  <!-- Full stylesheet — non-blocking -->
+  <!-- Full stylesheet, non-blocking -->
   <link rel="preload" href="/css/main.css" as="style"
         onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="/css/main.css"></noscript>
 
-  <!-- Preconnect — max 2 domains -->
+  <!-- Preconnect -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 
-  <!-- Preload — max 4 critical resources -->
-  <link rel="preload" href="/fonts/jetbrains-mono-subset.woff2"
-        as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/clash-display-subset.woff2"
-        as="font" type="font/woff2" crossorigin>
+  <!-- Fonts: JetBrains Mono (Google) + Clash Display (Fontshare) -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
 
   <!-- Module preload -->
   <link rel="modulepreload" href="/js/main.js">
 
   <!-- Prefetch likely next pages -->
-  <link rel="prefetch" href="/articles/" as="document">
-  <link rel="prefetch" href="/projects/" as="document">
+  <link rel="prefetch" href="https://thedecipherist.com/articles/" as="document">
+  <link rel="prefetch" href="https://thedecipherist.com/projects/" as="document">
 
   <!-- SEO -->
-  <title>TheDecipherist — Tim Carter Clausen | Full-Stack Architect</title>
+  <title>TheDecipherist, Tim Carter Clausen | Full-Stack Architect</title>
   <meta name="description"
     content="Full-stack architect. 38 years coding. Claude Code, MongoDB, Docker Swarm. 2M+ views. Cipher researcher.">
   <link rel="canonical" href="https://thedecipherist.com">
 
   <!-- Open Graph -->
   <meta property="og:type"         content="website">
-  <meta property="og:title"        content="TheDecipherist — Tim Carter Clausen">
+  <meta property="og:title"        content="TheDecipherist, Tim Carter Clausen">
   <meta property="og:description"  content="Full-stack architect. Builder. Cipher researcher.">
   <meta property="og:image"        content="https://thedecipherist.com/images/og/og-home.jpg">
   <meta property="og:image:width"  content="1200">
@@ -131,646 +139,892 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#050810">
+  <meta name="theme-color" content="#f9f7f4">
 </head>
 <body>
 
-<!-- Skip link — first element in body -->
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- Header / Navigation -->
-<header role="banner" class="site-header">
-  <nav aria-label="Primary navigation" class="nav">
-    <a href="/" aria-label="TheDecipherist — home" class="nav__logo">
-      <svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 32 32">
-        <rect width="32" height="32" rx="6" fill="oklch(0.12 0.03 260)"/>
-        <text x="16" y="22" text-anchor="middle" font-family="monospace" font-weight="700" font-size="15" fill="oklch(0.78 0.15 196)">TD</text>
-      </svg>
-      <span class="nav__logo-text">TheDecipherist</span>
-    </a>
-    <button class="nav__toggle" aria-expanded="false" aria-label="Open navigation" aria-controls="primary-nav">
-      <span></span><span></span><span></span>
-    </button>
-    <ul role="list" class="nav__links" id="primary-nav">
-      <li><a href="/articles/">Articles</a></li>
-      <li><a href="/projects/">Projects</a></li>
-      <li><a href="/resume/">Résumé</a></li>
-      <li>
-        <a href="/cipher/" class="nav__cipher-link">
-          <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          </svg>
-          Cipher Work
-        </a>
-      </li>
-    </ul>
-  </nav>
-</header>
-
+<!-- ─── Floating Pill Navigation ─── -->
 <main id="main-content">
 
-  <!-- 1. Hero -->
-  <section id="hero" class="section section--hero section--void" aria-labelledby="hero-headline">
+  <!-- ─── 1. Hero, full-bleed image, no text ─── -->
+  <section id="hero" class="section section--hero" aria-label="Hero">
     <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <picture class="hero__bg-picture" aria-hidden="true">
+      <source srcset="/images/og/TheDecipherist_hero_banner.webp" type="image/webp">
+      <img class="hero__bg-img" src="/images/og/TheDecipherist_hero_banner.jpg" alt=""
+           loading="eager" decoding="async">
+    </picture>
     <div class="hero__bg-fallback" aria-hidden="true"></div>
-
-    <div class="hero__content">
-      <p class="hero__eyebrow" aria-hidden="true">
-        <span class="hero__eyebrow-code">// Danish-American · Full-Stack Architect · 38 years</span>
-      </p>
-      <h1 id="hero-headline" class="hero__headline" data-scramble>
-        TheDecipherist
-      </h1>
-      <p class="hero__tagline">
-        I break down complexity so you don't have to.
-      </p>
-      <div class="hero__cta-group">
-        <a href="/articles/" class="btn btn--primary">Read the Articles</a>
-        <a href="/projects/" class="btn btn--ghost">See the Projects</a>
-      </div>
-    </div>
-
-    <div class="hero__scroll-indicator" aria-hidden="true">
-      <span class="hero__scroll-line"></span>
-    </div>
   </section>
 
-  <!-- 2. Stats -->
+
+  <!-- ─── 2. Stats, compact horizontal bar ─── -->
   <section id="stats" class="section section--stats" aria-labelledby="stats-heading">
+    
     <div class="container">
       <h2 id="stats-heading" class="visually-hidden">By the numbers</h2>
-      <ul role="list" class="stats-grid">
+      <ul role="list" class="stats-bar">
         <li class="stat-item">
-          <strong class="stat-number" aria-label="Over 2 million content views"
-                  style="--count-target:2;">
-            <span aria-hidden="true">2M+</span>
-          </strong>
+          <strong class="stat-number" aria-label="Over 2 million content views">2M+</strong>
           <span class="stat-label">Content Views</span>
         </li>
         <li class="stat-item">
-          <strong class="stat-number" aria-label="900 plus GitHub stars"
-                  style="--count-target:900;">
-            <span aria-hidden="true">900+</span>
-          </strong>
+          <strong class="stat-number" aria-label="900 plus GitHub stars">900+</strong>
           <span class="stat-label">GitHub Stars</span>
         </li>
         <li class="stat-item">
-          <strong class="stat-number" aria-label="38 years coding"
-                  style="--count-target:38;">
-            <span aria-hidden="true">38</span>
-          </strong>
+          <strong class="stat-number" aria-label="38 years coding">38</strong>
           <span class="stat-label">Years Coding</span>
         </li>
         <li class="stat-item">
-          <strong class="stat-number" aria-label="Translated into 15 plus languages"
-                  style="--count-target:15;">
-            <span aria-hidden="true">15+</span>
-          </strong>
+          <strong class="stat-number" aria-label="Translated into 15 plus languages">15+</strong>
           <span class="stat-label">Languages Translated</span>
         </li>
         <li class="stat-item">
-          <strong class="stat-number font-mono" aria-label="Z340 cipher solved">
-            Z340
-          </strong>
-          <span class="stat-label">Cipher Solved</span>
+          <strong class="stat-number font-mono" aria-label="Z13 & Z32 ciphers solved">Z13 & Z32</strong>
+          <span class="stat-label">Ciphers Solved</span>
         </li>
         <li class="stat-item">
-          <strong class="stat-number" aria-label="290 thousand Reddit views on one post"
-                  style="--count-target:290;">
-            <span aria-hidden="true">290K</span>
-          </strong>
+          <strong class="stat-number" aria-label="330 thousand Reddit views on one post">330K</strong>
           <span class="stat-label">Reddit Views (1 post)</span>
         </li>
       </ul>
     </div>
   </section>
 
-  <!-- 3. Articles -->
-  <section id="articles" class="section section--articles section--void" aria-labelledby="articles-heading">
+  <!-- ─── 3. GitHub Repos ─── -->
+  <section id="repos" class="section section--repos" aria-labelledby="repos-heading">
+    <canvas class="section-canvas" aria-hidden="true"></canvas>
     <div class="container">
-      <p class="category-label">Writing</p>
-      <h2 id="articles-heading" class="section__heading">
-        Articles &amp; Guides
-      </h2>
-      <p class="section__subheading">
-        The most-referenced independent Claude Code resource on the internet.
-        Ranked #1 by Google AI above Anthropic's own docs.
-      </p>
+      <div class="section__header">
+        <div class="section__header-text">
+          <p class="category-label">Open Source</p>
+          <h2 id="repos-heading" class="section__heading">GitHub <em>Repos</em></h2>
+          <p class="section__subheading">All public repositories, sorted by stars.</p>
+        </div>
+        <a href="https://github.com/TheDecipherist" class="btn btn--outline" rel="external noopener">
+          View on GitHub →
+        </a>
+      </div>
+      <div id="repos-grid" class="repos-grid" aria-live="polite" aria-label="GitHub repositories"></div>
+    </div>
+  </section>
 
-      <!-- AI & Claude Code -->
-      <div class="articles-category">
-        <h3 class="articles-category__heading">🤖 AI &amp; Claude Code</h3>
-        <div class="articles-grid">
+  <!-- ─── 4. Articles, editorial grid ─── -->
+  <section id="articles" class="section section--articles" aria-labelledby="articles-heading">
+    <canvas class="section-canvas" aria-hidden="true"></canvas>
+    <div class="container">
 
-          <article class="article-card" aria-labelledby="article-best-guide-title"
-                   data-article="best-guide"
-                   style="--vtname: article-best-guide">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2026-01" class="article-card__date">Jan 2026</time>
-              </div>
-              <h4 id="article-best-guide-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/best_claude_code_guide_2026/">Best Claude Code Guide 2026: The Complete Collection</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">Five versions. 59.9 million tokens tracked. 900+ GitHub stars. Translated into 15+ languages independently. The definitive index of every Claude Code guide — V3 through V5 plus the Starter Kit.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">900+ GitHub stars</span>
-              <span class="article-card__stat">15+ languages</span>
-            </footer>
-          </article>
-
-          <article class="article-card" aria-labelledby="article-v5-title"
-                   data-article="v5"
-                   style="--vtname: article-v5">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2025-12" class="article-card__date">Dec 2025</time>
-              </div>
-              <h4 id="article-v5-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/claude-code-guide-v5/">The Complete Guide to Claude Code V5: What 60+ Projects Taught Me</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">The renaming problem, plan mode contradictions, hooks that don't wait, TypeScript as non-negotiable, database wrapper patterns — lessons from 60+ real production projects that the official docs don't cover.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">60+ projects analyzed</span>
-            </footer>
-          </article>
-
-          <article class="article-card" aria-labelledby="article-v4-title"
-                   data-article="v4"
-                   style="--vtname: article-v4">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2025-09" class="article-card__date">Sep 2025</time>
-              </div>
-              <h4 id="article-v4-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/claude-code-guide-v4/">The Complete Guide to Claude Code V4</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">85% context reduction via MCP Tool Search, custom agents, session teleportation, and the full feature set — with production patterns the release notes don't explain.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">290,000 Reddit views</span>
-              <span class="article-card__stat">4,136 shares</span>
-              <span class="article-card__stat">#1 all-time r/ClaudeAI</span>
-            </footer>
-          </article>
-
-          <article class="article-card" aria-labelledby="article-v3-title"
-                   data-article="v3"
-                   style="--vtname: article-v3">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2025-06" class="article-card__date">Jun 2025</time>
-              </div>
-              <h4 id="article-v3-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/claude-code-guide/">The Complete Guide to Claude Code V3</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">The original comprehensive guide — LSP integration, CLAUDE.md configuration, MCP servers, skills, hooks, and IDE integration best practices. The foundation the later versions build on.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">166,000 Reddit views</span>
-              <span class="article-card__stat">96% upvote ratio</span>
-            </footer>
-          </article>
-
-          <article class="article-card" aria-labelledby="article-starter-kit-title"
-                   data-article="starter-kit"
-                   style="--vtname: article-starter-kit">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2025-07" class="article-card__date">Jul 2025</time>
-              </div>
-              <h4 id="article-starter-kit-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/claude-code-mastery-project-starter-kit/">Claude Code Starter Kit: Stop Configuring, Start Building</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">Ranked #1 by Google AI for "best claude starter kit" — above Anthropic's own quickstarts. 23 slash commands, 10 enforced rules, 9 deterministic hooks — wired and ready to clone.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">293 GitHub stars</span>
-              <span class="article-card__stat">#1 Google AI</span>
-            </footer>
-          </article>
-
-          <article class="article-card" aria-labelledby="article-memory-title"
-                   data-article="memory"
-                   style="--vtname: article-memory">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2025-08" class="article-card__date">Aug 2025</time>
-              </div>
-              <h4 id="article-memory-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/claude_memory_issues/">Why Claude Code Forgets Everything (And How to Fix It)</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">Claude Code's memory issues aren't random — they're caused by VS Code extension limits, session file caps, and WSL2/Docker isolation gaps. Root causes and a complete architectural solution.</p>
-            <footer class="article-card__footer"></footer>
-          </article>
-
-          <article class="article-card" aria-labelledby="article-mdd-guide-title"
-                   data-article="mdd-guide"
-                   style="--vtname: article-mdd-guide">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2025-10" class="article-card__date">Oct 2025</time>
-              </div>
-              <h4 id="article-mdd-guide-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/mdd-workflow/">MDD, Manual-First Development: The Complete Guide</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">A structured workflow that trades the illusion of speed for actual reliability. Document before you implement. Test before you build. Eliminates AI drift and rule violations before they ship.</p>
-            <footer class="article-card__footer"></footer>
-          </article>
-
-          <article class="article-card" aria-labelledby="article-mdd-case-title"
-                   data-article="mdd-case"
-                   style="--vtname: article-mdd-case">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2025-10" class="article-card__date">Oct 2025</time>
-              </div>
-              <h4 id="article-mdd-case-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/mdd/">Manual-Driven Development: 190 Findings, 7 Hours, Zero Rule Violations</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">A full MDD audit on a real production project. 190 findings surfaced in 7 hours. Fixed systematically with zero rule violations. This is the case study.</p>
-            <footer class="article-card__footer"></footer>
-          </article>
-
-          <article class="article-card" aria-labelledby="article-rulecatch-title"
-                   data-article="rulecatch"
-                   style="--vtname: article-rulecatch">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2025-09" class="article-card__date">Sep 2025</time>
-              </div>
-              <h4 id="article-rulecatch-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/rulecatch/">The "AI SLOP" Era Is Officially Over! (RuleCatch)</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">50% of Claude Code sessions had at least one rule violation across 6 weeks of real projects. RuleCatch catches violations the moment they happen — zero-token overhead, session analytics, CLAUDE.md enforcement built in.</p>
-            <footer class="article-card__footer"></footer>
-          </article>
-
-          <article class="article-card" aria-labelledby="article-compressmcp-title"
-                   data-article="compressmcp"
-                   style="--vtname: article-compressmcp">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">AI &amp; Claude Code</span>
-                <time datetime="2025-11" class="article-card__date">Nov 2025</time>
-              </div>
-              <h4 id="article-compressmcp-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/compressmcp/">CompressMCP: Lossless JSON Compression That Saves 40% of Your Context Window</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">CompressMCP intercepts MCP tool responses, compresses large JSON payloads via lossless key abbreviation, and hands Claude back 40% of the context window it was burning on raw output.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">40% context saved</span>
-            </footer>
-          </article>
-
+      <div class="section__header">
+        <div class="section__header-text">
+          <p class="category-label">Writing</p>
+          <h2 id="articles-heading" class="section__heading">
+            Articles &amp; Guides
+          </h2>
+          <p class="section__subheading">
+            The best independent resources for Claude Code on the internet.
+            Ranked #1 by Google AI above Anthropic's own docs.
+          </p>
         </div>
       </div>
 
-      <!-- DevOps & Infrastructure -->
       <div class="articles-category">
-        <h3 class="articles-category__heading">⚙️ DevOps &amp; Infrastructure</h3>
-        <div class="articles-grid">
+        <p class="articles-category__label">AI</p>
+        <ul class="articles-grid" role="list">
 
-          <article class="article-card" aria-labelledby="article-swarmk-title" data-article="swarmk">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">DevOps</span>
-                <time datetime="2025-05" class="article-card__date">May 2025</time>
+        <li>
+          <a href="https://thedecipherist.com/articles/mdd-workflow/" class="article-card" aria-labelledby="ac-mdd-workflow-title">
+            <div class="article-card__image">
+              <img src="/articles/mdd-workflow/mdd-workflow.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-04-20" class="article-card__date">Apr 2026</time>
               </div>
-              <h4 id="article-swarmk-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/swarmK/">SwarmK — The Docker Infrastructure Platform That Doesn't Need SSH</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">A complete infrastructure platform for Docker Swarm — networking policies, encryption, WAF, DNS, load balancing, alerts, and audit logs, all from a single control plane. No SSH.</p>
-            <footer class="article-card__footer"></footer>
-          </article>
+              <h4 id="ac-mdd-workflow-title" class="article-card__title">MDD, Manual-First Development: The Complete Guide</h4>
+              <p class="article-card__excerpt">MDD (Manual-First Development) is a structured workflow that trades the illusion of speed for actual reliability. Documentation becomes Claude's persistent project memory — the</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
 
-          <article class="article-card" aria-labelledby="article-swarm-k8s-title" data-article="swarm-k8s">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">DevOps</span>
-                <time datetime="2025-03" class="article-card__date">Mar 2025</time>
+        <li>
+          <a href="https://thedecipherist.com/articles/compressmcp/" class="article-card" aria-labelledby="ac-compressmcp-title">
+            <div class="article-card__image">
+              <img src="/articles/compressmcp/compressmcp.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-04-20" class="article-card__date">Apr 2026</time>
               </div>
-              <h4 id="article-swarm-k8s-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/docker_swarm_vs_kubernetes/">Docker Swarm vs Kubernetes in 2026</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">288,000 views across 4 subreddits in 8 hours. #4 on Hacker News. 10 years of Docker Swarm in production — 24 containers, two continents, live SaaS platform, $166/year.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">288,000 views (8 hrs)</span>
-              <span class="article-card__stat">#4 Hacker News</span>
-            </footer>
-          </article>
+              <h4 id="ac-compressmcp-title" class="article-card__title">CompressMCP: Lossless JSON Compression for Claude Code That Saves 40% of Your Context Window</h4>
+              <p class="article-card__excerpt">CompressMCP intercepts MCP tool responses, compresses large JSON payloads using lossless key abbreviation, and hands Claude a smaller-but-identical dataset. Install once, works</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
 
-          <article class="article-card" aria-labelledby="article-mongo-sql-title" data-article="mongo-sql">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">DevOps</span>
-                <time datetime="2025-02" class="article-card__date">Feb 2025</time>
+        <li>
+          <a href="https://thedecipherist.com/articles/best_claude_code_guide_2026/" class="article-card" aria-labelledby="ac-best-claude-code-guide-2026-title">
+            <div class="article-card__image">
+              <img src="/articles/best_claude_code_guide_2026/best_claude_code_guides_2026.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-02-17" class="article-card__date">Feb 2026</time>
               </div>
-              <h4 id="article-mongo-sql-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/mongo_vs_sql/">MongoDB vs SQL in 2026 — 10 Years of Production Data Says You're Wrong</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">#1 organic Google result for "mongo vs sql 2026". Endorsed by a MongoDB Software Architect Manager. Every argument against MongoDB comes from people who never used it correctly.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">#1 Google organic</span>
-            </footer>
-          </article>
+              <h4 id="ac-best-claude-code-guide-2026-title" class="article-card__title">Best Claude Code Guide 2026: The Complete Collection</h4>
+              <p class="article-card__excerpt">Five versions, 59.9 million tokens tracked, 484 GitHub stars, translated into 11 languages. Every Claude Code guide, what it covers, and where to find it.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
 
-          <article class="article-card" aria-labelledby="article-docker-guide-title" data-article="docker-guide">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">DevOps</span>
-                <time datetime="2024-12" class="article-card__date">Dec 2024</time>
+        <li>
+          <a href="https://thedecipherist.com/articles/claude-code-guide-v5/" class="article-card" aria-labelledby="ac-claude-code-guide-v5-title">
+            <div class="article-card__image">
+              <img src="/articles/claude-code-guide-v5/claude_code_mastery_V5.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-02-11" class="article-card__date">Feb 2026</time>
               </div>
-              <h4 id="article-docker-guide-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/docker-swarm-guide/">The Complete Docker Swarm Production Guide</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">Battle-tested Docker Swarm production guide — Swarm hierarchy, compose files, multi-stage Dockerfiles, overlay networking, rolling updates, secrets management, and monitoring.</p>
-            <footer class="article-card__footer"></footer>
-          </article>
+              <h4 id="ac-claude-code-guide-v5-title" class="article-card__title">The Complete Guide to Claude Code V5: What 60+ Projects Taught Me</h4>
+              <p class="article-card__excerpt">The renaming problem, plan mode contradictions, hooks that don't wait, TypeScript as non-negotiable, database wrapper patterns, testing methodology, architecture docs, skills as</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
 
-          <article class="article-card" aria-labelledby="article-nginx-title" data-article="nginx">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">DevOps</span>
-                <time datetime="2025-01" class="article-card__date">Jan 2025</time>
+        <li>
+          <a href="https://thedecipherist.com/articles/rulecatch/" class="article-card" aria-labelledby="ac-rulecatch-title">
+            <div class="article-card__image">
+              <img src="/articles/rulecatch/rulecatch_banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-02-11" class="article-card__date">Feb 2026</time>
               </div>
-              <h4 id="article-nginx-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/nginx-docker-swarm/">NGINX in Docker Swarm: Production Setup</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">Production-grade NGINX inside Docker Swarm — zero-downtime deployments, SSL secrets management, ModSecurity WAF integration, and exact configuration patterns that hold up under real traffic.</p>
-            <footer class="article-card__footer"></footer>
-          </article>
+              <h4 id="ac-rulecatch-title" class="article-card__title">The "AI SLOP" Era Is Officially Over!</h4>
+              <p class="article-card__excerpt">We tracked every tool call Claude Code made for 6 weeks. 50% of sessions had at least one violation. RuleCatch catches them in real-time — 208+ rules, zero token overhead, AES-256</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
 
-          <article class="article-card" aria-labelledby="article-mongo-backups-title" data-article="mongo-backups">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">DevOps</span>
-                <time datetime="2025-01" class="article-card__date">Jan 2025</time>
+        <li>
+          <a href="https://thedecipherist.com/articles/claudeai_banned_on_reddit/" class="article-card" aria-labelledby="ac-claudeai-banned-on-reddit-title">
+            <div class="article-card__image">
+              <img src="/articles/claudeai_banned_on_reddit/claudeai_banned_reddit.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-02-18" class="article-card__date">Feb 2026</time>
               </div>
-              <h4 id="article-mongo-backups-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/mongo-backups/">I've Done 3,650+ MongoDB Backups. Here's What the Documentation Gets Wrong.</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">The --nsInclude bug, opaque gzip archives, collection tiering, restore pitfalls — ten years of MongoDB backup lessons the official documentation consistently gets wrong.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">3,650+ backups experience</span>
-            </footer>
-          </article>
+              <h4 id="ac-claudeai-banned-on-reddit-title" class="article-card__title">1.58M Views. 96% Approval. Banned From 6 Subreddits in 48 Hours.</h4>
+              <p class="article-card__excerpt">Two days ago I published a 7,400-word technical deep dive. It hit 303,000 views in 8 hours. Then I got permanently banned from 6 subreddits with zero rules cited. This is the full</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
 
-        </div>
+        <li>
+          <a href="https://thedecipherist.com/articles/claude-code-mastery-project-starter-kit/" class="article-card" aria-labelledby="ac-claude-code-starter-kit-title">
+            <div class="article-card__image">
+              <img src="/articles/claude-code-mastery-project-starter-kit/banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-02-13" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-claude-code-starter-kit-title" class="article-card__title">Claude Code Starter Kit: Stop Configuring, Start Building</h4>
+              <p class="article-card__excerpt">The Claude Code Starter Kit is a ready-to-use project template with 23 slash commands, 10 rules, 9 deterministic hooks, 2 custom agents, 2 skills, a production database wrapper,</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/claude-code-guide-v4/" class="article-card" aria-labelledby="ac-claude-code-guide-v4-title">
+            <div class="article-card__image">
+              <img src="/articles/claude-code-guide-v4/claude_code_guide_v4.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-01-25" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-claude-code-guide-v4-title" class="article-card__title">The Complete Guide to Claude Code V4</h4>
+              <p class="article-card__excerpt">The community asked, Anthropic delivered: 85% context reduction via MCP Tool Search, custom agents, session teleportation, and the January 2026 revolution.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/claude-code-guide/" class="article-card" aria-labelledby="ac-claude-code-guide-v3-title">
+            <div class="article-card__image">
+              <img src="/articles/claude-code-guide/claude-code-guide.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-01-15" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-claude-code-guide-v3-title" class="article-card__title">The Complete Guide to Claude Code V3</h4>
+              <p class="article-card__excerpt">Master Claude Code with LSP integration, CLAUDE.md configuration, MCP servers, skills, hooks, and best practices for IDE-level code intelligence.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/claude_memory_issues/" class="article-card" aria-labelledby="ac-claude-memory-issues-title">
+            <div class="article-card__image">
+              <img src="/articles/claude_memory_issues/claude_memory_issues.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-01-20" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-claude-memory-issues-title" class="article-card__title">Why Claude Code Forgets Everything (And How to Fix It)</h4>
+              <p class="article-card__excerpt">Claude Code's memory issues aren't random - they're caused by VS Code extension limits, session file caps, and WSL2/Docker memory leaks. Here's the real fix.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/why_did_thedecipherist_get_banned_from_r_claudeai/" class="article-card" aria-labelledby="ac-why-did-thedecipherist-get-banned-from-r-claudeai-title">
+            <div class="article-card__image">
+              <img src="/articles/why_did_thedecipherist_get_banned_from_r_claudeai/why_did_thedecipherist_get_banned_from_r_claudeai.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-01-14" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-why-did-thedecipherist-get-banned-from-r-claudeai-title" class="article-card__title">Why Did TheDecipherist Get Banned From r/ClaudeAI?</h4>
+              <p class="article-card__excerpt">No reason given. No rule cited. No warning ever issued. 1,111,500 views, 28 posts, 940 comments, 11,964 shares — and a permanent ban from r/ClaudeAI. Here's what happened.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/mdd-manual-driven-development/" class="article-card" aria-labelledby="ac-mdd-manual-driven-development-title">
+            <div class="article-card__image">
+              <img src="/articles/mdd_manual_driven_development/mdd_manual_driven_development.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-04-01" class="article-card__date">Apr 2026</time>
+              </div>
+              <h4 id="ac-mdd-manual-driven-development-title" class="article-card__title">MDD (Manual-Driven Development) -- How to Install It in Any Project in 60 Seconds</h4>
+              <p class="article-card__excerpt">A quick-start guide for installing Manual-Driven Development in any project. Clone the starter kit, open Claude Code, run one prompt, and MDD sets up the two-zone architecture</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/mdd/" class="article-card" aria-labelledby="ac-mdd-title">
+            <div class="article-card__image">
+              <img src="/articles/mdd/mdd.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag">AI</span>
+                <time datetime="2026-03-10" class="article-card__date">Mar 2026</time>
+              </div>
+              <h4 id="ac-mdd-title" class="article-card__title">Manual-Driven Development: 190 Findings, 7 Hours, Zero Rule Violations</h4>
+              <p class="article-card__excerpt">Every Claude Code session starts with Claude not knowing your system. MDD fixes confident divergence with documentation infrastructure: one markdown per feature, a CLAUDE.md</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        </ul>
       </div>
 
-      <!-- Security -->
       <div class="articles-category">
-        <h3 class="articles-category__heading">🔒 Security</h3>
-        <div class="articles-grid">
+        <p class="articles-category__label">Infrastructure</p>
+        <ul class="articles-grid" role="list">
 
-          <article class="article-card" aria-labelledby="article-modsec-title" data-article="modsec">
-            <header class="article-card__header">
-              <div class="article-card__meta">
-                <span class="article-card__category">Security</span>
-                <time datetime="2025-04" class="article-card__date">Apr 2025</time>
+        <li>
+          <a href="https://thedecipherist.com/articles/swarmK/" class="article-card" aria-labelledby="ac-swarmk-title">
+            <div class="article-card__image">
+              <img src="/articles/swarmK/swarmk-hero.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-04-20" class="article-card__date">Apr 2026</time>
               </div>
-              <h4 id="article-modsec-title" class="article-card__title">
-                <a href="https://thedecipherist.com/articles/modsecurity-guide/">OWASP &amp; ModSecurity Deep Dive</a>
-              </h4>
-            </header>
-            <p class="article-card__excerpt">Ranked #1 on Google for "owasp modsecurity deep dive" — outranking OWASP.org itself. Stack-specific ModSecurity configurations for Node.js/MongoDB vs Apache/SQL, OWASP Top 10 coverage.</p>
-            <footer class="article-card__footer">
-              <span class="article-card__stat">#1 Google, above OWASP.org</span>
-            </footer>
-          </article>
+              <h4 id="ac-swarmk-title" class="article-card__title">SwarmK — The Docker Infrastructure Platform That Doesn't Need SSH</h4>
+              <p class="article-card__excerpt">SwarmK is a complete infrastructure platform for Docker Swarm — networking policies, encryption, WAF, DNS, load balancing, alerts, and audit logs, all from a single control plane.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
 
-        </div>
+        <li>
+          <a href="https://thedecipherist.com/articles/peelx/" class="article-card" aria-labelledby="ac-peelx-title">
+            <div class="article-card__image">
+              <img src="/articles/peelx/hero.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-04-10" class="article-card__date">Apr 2026</time>
+              </div>
+              <h4 id="ac-peelx-title" class="article-card__title">PeelX: One Command to Extract Every Nested Archive and Run Every Installer</h4>
+              <p class="article-card__excerpt">PeelX recursively extracts nested archives (ZIP, RAR, 7z, TAR), cleans up all the leftover junk, and drops you into an interactive curses-based selector to run every installer.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/tuimon/" class="article-card" aria-labelledby="ac-tuimon-title">
+            <div class="article-card__image">
+              <img src="/articles/tuimon/hero.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-04-05" class="article-card__date">Apr 2026</time>
+              </div>
+              <h4 id="ac-tuimon-title" class="article-card__title">TuiMon: Render HTML Dashboards Directly in Your Terminal</h4>
+              <p class="article-card__excerpt">TuiMon renders HTML pages directly in your terminal. It takes any HTML file — CSS flexbox, Chart.js, D3 — runs it in headless Chromium, captures a screenshot, and streams it using</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/strictDB/" class="article-card" aria-labelledby="ac-strictdb-title">
+            <div class="article-card__image">
+              <img src="/articles/strictDB/strictDB_banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-02-26" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-strictdb-title" class="article-card__title">I got tired of AI writing raw SQL with no guardrails. So I built a unified database driver where everything speaks MongoDB.</h4>
+              <p class="article-card__excerpt">StrictDB is a unified database driver. One API for MongoDB, PostgreSQL, MySQL, MSSQL, SQLite, and Elasticsearch. Write queries in MongoDB syntax — StrictDB translates them to</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/mongo-backups/" class="article-card" aria-labelledby="ac-mongo-backups-title">
+            <div class="article-card__image">
+              <img src="/articles/mongo_backups/mongo_backups.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-02-25" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-mongo-backups-title" class="article-card__title">I've Done 3,650+ MongoDB Backups. Here's What the Documentation Gets Wrong.</h4>
+              <p class="article-card__excerpt">10 years of MongoDB backup lessons: the --nsInclude bug, opaque gzip archives, collection tiering, restore command builders, and the self-healing test nobody runs. 3,650+ daily</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/dockerdoctor/" class="article-card" aria-labelledby="ac-dockerdoctor-title">
+            <div class="article-card__image">
+              <img src="/articles/dockerdoctor/dockerdoctor_banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-02-23" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-dockerdoctor-title" class="article-card__title">I Built a CLI That Diagnoses Docker Problems and Gives You the Fix</h4>
+              <p class="article-card__excerpt">Interactive CLI that lints your Dockerfile, compose file, and running containers. 50 checks across 11 categories with auto-fix, TUI browser, and CI/CD integration. Every finding</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/the_docker_developer_workflow_guide_2026/" class="article-card" aria-labelledby="ac-docker-developer-workflow-title">
+            <div class="article-card__image">
+              <img src="/articles/the_docker_developer_workflow_guide_2026/docker_developer_workflow_banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-02-22" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-docker-developer-workflow-title" class="article-card__title">The Docker Developer Workflow Guide: How to Actually Work with Docker Day-to-Day</h4>
+              <p class="article-card__excerpt">The complete Docker guide for developers - Dockerfiles, Compose, secrets, security, versioning, debugging, and the architecture decisions that matter. How to write Dockerfiles</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/mongo_vs_sql/" class="article-card" aria-labelledby="ac-mongo-vs-sql-title">
+            <div class="article-card__image">
+              <img src="/articles/mongo_vs_sql/banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-02-16" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-mongo-vs-sql-title" class="article-card__title">MongoDB vs SQL in 2026</h4>
+              <p class="article-card__excerpt">I wrote SQL professionally for as many years as I've used MongoDB. Every argument against MongoDB comes from people who never learned how to use it. Here's the complete breakdown</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/docker_swarm_vs_kubernetes/" class="article-card" aria-labelledby="ac-docker-swarm-vs-kubernetes-title">
+            <div class="article-card__image">
+              <img src="/articles/docker_swarm_vs_kubernetes/banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-02-15" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-docker-swarm-vs-kubernetes-title" class="article-card__title">Docker Swarm vs Kubernetes in 2026</h4>
+              <p class="article-card__excerpt">10 years of Docker Swarm in production — 24 containers, two continents, live SaaS platform, zero crashes, $166/year. Side-by-side YAML comparisons, real production numbers, a</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/the-mongo-replicaset-guide/" class="article-card" aria-labelledby="ac-mongo-replicaset-guide-title">
+            <div class="article-card__image">
+              <img src="/articles/the_mongo_replicaset_guide/the_mongo_replicaset_guide.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2025-12-15" class="article-card__date">Dec 2025</time>
+              </div>
+              <h4 id="ac-mongo-replicaset-guide-title" class="article-card__title">The Complete Guide to MongoDB 8.0 Replica Sets</h4>
+              <p class="article-card__excerpt">Production-ready MongoDB replica set deployment on Ubuntu. Covers Docker Swarm, TLS encryption, backup strategies, performance tuning, and security hardening.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/docker-swarm-guide/" class="article-card" aria-labelledby="ac-docker-swarm-guide-title">
+            <div class="article-card__image">
+              <img src="/articles/docker-swarm-guide/docker-swarm-guide.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-01-10" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-docker-swarm-guide-title" class="article-card__title">The Complete Docker Swarm Production Guide</h4>
+              <p class="article-card__excerpt">Battle-tested Docker Swarm production guide. Covers Swarm hierarchy, VPS requirements, compose files, multi-stage Dockerfiles, Prometheus/Grafana monitoring, and CI/CD workflows.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/nginx-docker-swarm/" class="article-card" aria-labelledby="ac-nginx-docker-swarm-title">
+            <div class="article-card__image">
+              <img src="/articles/nginx-docker-swarm/nginx-docker-swarm.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-01-12" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-nginx-docker-swarm-title" class="article-card__title">NGINX in Docker Swarm: Production Setup</h4>
+              <p class="article-card__excerpt">Production-grade NGINX deployment in Docker Swarm. Zero-downtime deployments, SSL secrets management, ModSecurity WAF integration, and Datadog monitoring.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/modsecurity-guide/" class="article-card" aria-labelledby="ac-modsecurity-guide-title">
+            <div class="article-card__image">
+              <img src="/articles/modsecurity-guide/modsecurity-guide.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--security">Security</span>
+                <time datetime="2026-01-08" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-modsecurity-guide-title" class="article-card__title">OWASP &amp; ModSecurity Deep Dive</h4>
+              <p class="article-card__excerpt">Stack-specific ModSecurity configurations for Node.js/MongoDB vs Apache/SQL. OWASP Top 10, Core Rule Set tuning, and practical security hardening.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/nodejs-backend-best-practices/" class="article-card" aria-labelledby="ac-nodejs-backend-best-practices-title">
+            <div class="article-card__image">
+              <img src="/articles/nodejs_backend_best_practices_guide/nodejs_banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--devops">DevOps</span>
+                <time datetime="2026-01-30" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-nodejs-backend-best-practices-title" class="article-card__title">Node.js Backend Best Practices Guide 2026</h4>
+              <p class="article-card__excerpt">Comprehensive Node.js backend best practices for 2026. Covers architecture patterns, error handling, security, performance optimization, and production deployment.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        </ul>
       </div>
 
-      <p style="text-align:center; margin-top: 3rem;">
-        <a href="/articles/" class="btn btn--ghost">View all articles →</a>
+      <div class="articles-category">
+        <p class="articles-category__label">Crime &amp; Mystery</p>
+        <ul class="articles-grid" role="list">
+
+        <li>
+          <a href="https://thedecipherist.com/articles/voynich_manuscript/" class="article-card" aria-labelledby="ac-voynich-manuscript-solved-title">
+            <div class="article-card__image">
+              <img src="/articles/voynich_manuscript/voynich_manuscript_banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--security">Crypto</span>
+                <time datetime="2026-02-03" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-voynich-manuscript-solved-title" class="article-card__title">Voynich Manuscript ~85% Solved: It's a 15th-Century Jewish Rabbi's Field Manual</h4>
+              <p class="article-card__excerpt">The Voynich Manuscript is not the world's most mysterious book. It's a 15th-century Italian Jewish rabbi's personal reference book - herbal medicine, astronomy, ritual purity</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/the_zodiac_solved/" class="article-card" aria-labelledby="ac-the-zodiac-solved-title">
+            <div class="article-card__image">
+              <img src="/articles/the_zodiac_solved/the_zodiac_solved_banner_1080.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--security">Crypto</span>
+                <time datetime="2026-01-30" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-the-zodiac-solved-title" class="article-card__title">The Zodiac Solved: Complete Mathematical Proof</h4>
+              <p class="article-card__excerpt">The complete mathematical proof identifying the Zodiac Killer. Four ciphers, one checksum system, 55 years of mystery solved. Arthur Leigh Allen was the Zodiac.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/beale_ciphers/" class="article-card" aria-labelledby="ac-beale-ciphers-title">
+            <div class="article-card__image">
+              <img src="/articles/beale_ciphers/beale_cipher.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--security">Crypto</span>
+                <time datetime="2026-02-09" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-beale-ciphers-title" class="article-card__title">The Beale Ciphers: A Complete Research Compendium</h4>
+              <p class="article-card__excerpt">The Beale Ciphers — three ciphertexts from 1885 allegedly describing buried treasure in Bedford County, Virginia. One solved, two unsolved. Full statistical analysis, hoax</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/why-the-baber-case-is-a-hoax/" class="article-card" aria-labelledby="ac-why-the-baber-case-is-a-hoax-title">
+            <div class="article-card__image">
+              <img src="/articles/why_the_baber_case_is_a_hoax/baber_banner.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--security">Crypto</span>
+                <time datetime="2026-02-09" class="article-card__date">Feb 2026</time>
+              </div>
+              <h4 id="ac-why-the-baber-case-is-a-hoax-title" class="article-card__title">The Zodiac-Black Dahlia "Solution" Is a Hoax. Here's the Complete Breakdown.</h4>
+              <p class="article-card__excerpt">Alex Baber claims to have solved the Zodiac and Black Dahlia cases by linking them to Marvin Margolis. His methodology is unpublished, his backstory fabricated, and the two crimes</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://thedecipherist.com/articles/march-impromptu/" class="article-card" aria-labelledby="ac-march-impromptu-title">
+            <div class="article-card__image">
+              <img src="/articles/march-impromptu/banner-500.webp" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__top">
+                <span class="article-card__category-tag article-card__category-tag--security">Crypto</span>
+                <time datetime="2026-01-30" class="article-card__date">Jan 2026</time>
+              </div>
+              <h4 id="ac-march-impromptu-title" class="article-card__title">March Impromptu Cipher Solved</h4>
+              <p class="article-card__excerpt">After 25 failed Enigma attempts over 13 years, here's why the Nazi treasure cipher was unsolvable: it's not encrypted text—it's a geographic navigation system.</p>
+              <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
+            </div>
+          </a>
+        </li>
+
+        </ul>
+      </div>
+
+      <p class="section__cta">
+        <a href="https://thedecipherist.com/articles/" class="btn btn--outline">View all articles →</a>
       </p>
     </div>
   </section>
 
-  <!-- 4. Projects -->
+  <!-- ─── 4. Projects, numbered editorial list ─── -->
   <section id="projects" class="section section--projects" aria-labelledby="projects-heading">
+    <canvas class="section-canvas" aria-hidden="true"></canvas>
     <div class="container">
       <p class="category-label">Tools</p>
-      <h2 id="projects-heading" class="section__heading">Developer Tools</h2>
+      <h2 id="projects-heading" class="section__heading">Projects & Developer Tools</h2>
       <p class="section__subheading">
-        Projects built to solve real problems — tools I needed that didn't exist yet.
+        Projects built to solve real problems, tools I needed that didn't exist yet.
       </p>
-      <div class="projects-grid">
 
-        <article class="project-card" aria-labelledby="proj-rulecatch-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
-          </div>
-          <div class="project-card__content">
-            <h3 id="proj-rulecatch-name" class="project-card__name">RuleCatch</h3>
-            <p class="project-card__description">Real-time rule enforcement for Claude Code — catches AI coding violations the moment they happen, not after the fact. Zero-token overhead, session analytics, CLAUDE.md enforcement.</p>
-            <div class="project-card__links">
-              <a href="https://thedecipherist.com/articles/rulecatch/" class="project-card__link" rel="external noopener">Article</a>
+      <ol class="projects-list" role="list" style="margin-top: var(--space-16, 4rem);">
+
+        <li class="project-item" aria-labelledby="proj-rulecatch-name" data-github="TheDecipherist/rulecatch-sdk">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">01</span>
+            <h3 id="proj-rulecatch-name" class="project-item__name">RuleCatch</h3>
+            <p class="project-item__description">Real-time rule enforcement for Claude Code. 208+ rules across 18 categories catch violations as they happen, zero token overhead, AES-256-GCM encrypted, GDPR-compliant with full US/EU data isolation.</p>
+            <div class="project-item__links">
+              <a href="https://rulecatch.ai" class="project-item__link" rel="external noopener">rulecatch.ai →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-swarmk-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/rulecatch.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-swarmk-name" class="project-card__name">SwarmK</h3>
-            <p class="project-card__description">Docker Swarm infrastructure management without SSH — agent API, live dashboard, WebSocket gateway, networking policies, WAF, DNS, load balancing, and monitoring built in.</p>
-            <div class="project-card__links">
-              <a href="https://thedecipherist.com/articles/swarmK/" class="project-card__link" rel="external noopener">Article</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-strictdb-name" data-github="TheDecipherist/strictdb">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">02</span>
+            <h3 id="proj-strictdb-name" class="project-item__name">StrictDB</h3>
+            <p class="project-item__description">Unified database driver, one API for MongoDB, PostgreSQL, MySQL, MSSQL, SQLite, and Elasticsearch. AI-first guardrails, self-correcting errors, schema discovery, and an MCP server with 14 tools.</p>
+            <div class="project-item__links">
+              <a href="https://strictdb.com" class="project-item__link" rel="external noopener">strictdb.com →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-strictdb-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/strictdb.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-strictdb-name" class="project-card__name">StrictDB</h3>
-            <p class="project-card__description">Unified AI-first database driver for MongoDB, PostgreSQL, MySQL, MSSQL, SQLite, and Elasticsearch — one API for all databases, guardrails and self-correcting errors built in.</p>
-            <div class="project-card__links">
-              <a href="https://thedecipherist.com/articles/strictDB/" class="project-card__link" rel="external noopener">Article</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-zodiac-name">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">03</span>
+            <h3 id="proj-zodiac-name" class="project-item__name">The Zodiac Solved</h3>
+            <p class="project-item__description">Cryptographic analysis identifying the Zodiac Killer through decoded cipher evidence. Systematic extraction of hidden messages revealing the name and address encoded in the infamous ciphers.</p>
+            <div class="project-item__links">
+              <a href="https://thezodiacsolved.com" class="project-item__link" rel="external noopener">thezodiacsolved.com →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-claude-memory-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/thezodiacsolved.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-claude-memory-name" class="project-card__name">Claude Code Mastery Starter Kit</h3>
-            <p class="project-card__description">Production-ready Claude Code template — 23 slash commands, 10 enforced rules, 9 deterministic hooks, MongoDB wrapper, three-layer security. Ranked #1 by Google AI.</p>
-            <div class="project-card__links">
-              <a href="https://thedecipherist.com/articles/claude-code-mastery-project-starter-kit/" class="project-card__link" rel="external noopener">Article</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-dockerdoctor-name" data-github="TheDecipherist/dockerdoctor">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">04</span>
+            <h3 id="proj-dockerdoctor-name" class="project-item__name">DockerDoctor</h3>
+            <p class="project-item__description">Interactive CLI that lints your Dockerfile, compose file, and running containers. 50 checks across 11 categories with auto-fix, TUI browser, and CI/CD integration.</p>
+            <div class="project-item__links">
+              <a href="https://thedecipherist.github.io/dockerdoctor/" class="project-item__link" rel="external noopener">Read more →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-tuimon-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/dockerdoctor.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-tuimon-name" class="project-card__name">TuiMon</h3>
-            <p class="project-card__description">Render any HTML dashboard directly inside your terminal using Playwright and Sharp — CSS flexbox, Chart.js, D3, live data. Any dashboard. Any terminal.</p>
-            <div class="project-card__links">
-              <a href="https://thedecipherist.com/articles/tuimon/" class="project-card__link" rel="external noopener">Article</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-classpresso-name" data-github="TheDecipherist/classpresso">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">05</span>
+            <h3 id="proj-classpresso-name" class="project-item__name">Classpresso</h3>
+            <p class="project-item__description">Build-time CSS class consolidation tool. Reduces browser workload by eliminating redundant utility classes. 50% faster style recalculation and 42% faster First Paint.</p>
+            <div class="project-item__links">
+              <a href="https://classpresso.com" class="project-item__link" rel="external noopener">classpresso.com →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-tersejson-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/classpresso.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-tersejson-name" class="project-card__name">TerseJSON</h3>
-            <p class="project-card__description">Memory-efficient JSON via lazy proxy expansion — 70% less RAM than JSON.parse, payloads 30–80% smaller. Built for environments where every byte counts.</p>
-            <div class="project-card__links">
-              <a href="https://tersejson.com" class="project-card__link" rel="external noopener">tersejson.com</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-classmcp-name" data-github="TheDecipherist/classmcp">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">06</span>
+            <h3 id="proj-classmcp-name" class="project-item__name">ClassMCP</h3>
+            <p class="project-item__description">Semantic CSS framework for AI code generation. MCP server that reduces token consumption by ~90% compared to verbose utility classes. Works with Claude, ChatGPT, Copilot, and more.</p>
+            <div class="project-item__links">
+              <a href="https://classmcp.com" class="project-item__link" rel="external noopener">classmcp.com →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-compressmcp-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/classmcp.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-compressmcp-name" class="project-card__name">CompressMCP</h3>
-            <p class="project-card__description">Lossless JSON compression for Claude Code via PostToolUse hook + MCP server — cuts token usage by 40% on average with zero information loss.</p>
-            <div class="project-card__links">
-              <a href="https://thedecipherist.com/articles/compressmcp/" class="project-card__link" rel="external noopener">Article</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-tersejson-name" data-github="TheDecipherist/tersejson">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">07</span>
+            <h3 id="proj-tersejson-name" class="project-item__name">TerseJSON</h3>
+            <p class="project-item__description">Transparent JSON key compression library. Reduces memory usage and network bandwidth by 30–80% using lazy-loading proxies that only allocate memory for accessed fields.</p>
+            <div class="project-item__links">
+              <a href="https://tersejson.com" class="project-item__link" rel="external noopener">tersejson.com →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-peelx-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/tersejson.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-peelx-name" class="project-card__name">PeelX</h3>
-            <p class="project-card__description">One command to recursively extract every nested archive (ZIP, RAR, 7z, TAR) and run every installer. Clean up leftover junk. Interactive executable selector.</p>
-            <div class="project-card__links">
-              <a href="https://thedecipherist.com/articles/peelx/" class="project-card__link" rel="external noopener">Article</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-credhopper-name" data-github="TheDecipherist/credhopper">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">08</span>
+            <h3 id="proj-credhopper-name" class="project-item__name">CredHopper</h3>
+            <p class="project-item__description">Chrome extension for multi-profile credential management. Organize credentials by client, one-click autofill, AES-256-GCM encryption. Built for agencies and freelancers.</p>
+            <div class="project-item__links">
+              <a href="https://credhopper.com" class="project-item__link" rel="external noopener">credhopper.com →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-dockerdoctor-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/credhopper.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-dockerdoctor-name" class="project-card__name">DockerDoctor</h3>
-            <p class="project-card__description">Interactive CLI that automatically diagnoses Docker problems — 50 checks in 11 categories across Dockerfiles, compose files, and running containers, with exact fix suggestions.</p>
-            <div class="project-card__links">
-              <a href="https://thedecipherist.com/articles/dockerdoctor/" class="project-card__link" rel="external noopener">Article</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-kactuzmusic-name">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">09</span>
+            <h3 id="proj-kactuzmusic-name" class="project-item__name">Kactuz Music</h3>
+            <p class="project-item__description">Contemporary Christian music bringing the living Word of God to music. Soulful vocals, cinematic textures, and pop-infused worship arrangements rooted in Scripture.</p>
+            <div class="project-item__links">
+              <a href="https://kactuzmusic.com" class="project-item__link" rel="external noopener">kactuzmusic.com →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-clip2path-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/kactuzmusic.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-clip2path-name" class="project-card__name">Clip2Path</h3>
-            <p class="project-card__description">VS Code extension — paste clipboard images directly as file paths into the terminal, built for CLI tools like Claude Code. Zero friction image handoff.</p>
-            <div class="project-card__links">
-              <a href="https://clip2path.com" class="project-card__link" rel="external noopener">clip2path.com</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-sacredspaces-name">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">10</span>
+            <h3 id="proj-sacredspaces-name" class="project-item__name">Sacred Spaces Build</h3>
+            <p class="project-item__description">Premium contractor services website for Sacred Spaces NYC, Inc. High-end custom homes, seamless additions, and transformative remodels in the greater New York area.</p>
+            <div class="project-item__links">
+              <a href="https://sacredspacesbuild.com" class="project-item__link" rel="external noopener">sacredspacesbuild.com →</a>
             </div>
           </div>
-        </article>
-
-        <article class="project-card" aria-labelledby="proj-classpresso-name">
-          <div class="project-card__media">
-            <div class="project-card__media-fallback"></div>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/sacredspacesbuild.webp" alt="" loading="lazy" decoding="async">
           </div>
-          <div class="project-card__content">
-            <h3 id="proj-classpresso-name" class="project-card__name">Classpresso</h3>
-            <p class="project-card__description">CSS class consolidation — compress multiple utility classes into single optimized classes for faster style recalculation. Built for large-scale CSS performance.</p>
-            <div class="project-card__links">
-              <a href="https://classpresso.com" class="project-card__link" rel="external noopener">classpresso.com</a>
+        </li>
+
+        <li class="project-item" aria-labelledby="proj-wavesurf-name" data-github="TheDecipherist/wavesurfer-react-player">
+          <div class="project-item__info">
+            <span class="project-item__number" aria-hidden="true">11</span>
+            <h3 id="proj-wavesurf-name" class="project-item__name">Wavesurf React Player</h3>
+            <p class="project-item__description">Production-ready React audio player with waveform visualization. Global state management, pre-computed peaks for instant rendering, persistent mini-player, and TypeScript support.</p>
+            <div class="project-item__links">
+              <a href="https://github.com/TheDecipherist/wavesurfer-react-player" class="project-item__link" rel="external noopener">GitHub →</a>
             </div>
           </div>
-        </article>
+          <div class="project-item__visual" aria-hidden="true">
+            <img class="project-item__screenshot" src="/images/projects/wavesurf.webp" alt="" loading="lazy" decoding="async">
+          </div>
+        </li>
 
-      </div>
+      </ol>
     </div>
   </section>
 
-  <!-- 5. About -->
-  <section id="about" class="section section--about section--void" aria-labelledby="about-heading">
+  <!-- ─── 5. About ─── -->
+  <section id="about" class="section section--about" aria-labelledby="about-heading">
+    <canvas class="section-canvas" aria-hidden="true"></canvas>
     <div class="container">
       <div class="layout-two-col">
         <div class="about__text">
           <p class="category-label">About</p>
-          <h2 id="about-heading" class="section__heading" style="text-align:left; margin-bottom: 1.5rem;">
+          <h2 id="about-heading" class="section__heading" style="margin-bottom: var(--space-6, 1.5rem);">
             Tim Carter Clausen
           </h2>
-          <p class="about__bio" style="color: var(--color-text-muted); margin-bottom: 1.5rem; line-height: 1.8;">
-            Danish-American. Born in Denmark, moved to America in 2009.
-            38 years of coding. Built 10,000+ PCs. Ran enterprise infrastructure for a billion-dollar company.
-            Designed systems that outlasted the teams who built them.
+          <p class="about__bio">
+            Known online as <strong>TheDecipherist</strong>, Staff Engineer, Platform &amp; AI Engineer,
+            and one of the most recognised independent voices in the Claude Code ecosystem.
+            His guides turned Claude from a chat interface into a production-ready autonomous engineer,
+            crossing <strong>2M+ views</strong> in early 2026, translated into 15+ languages without coordination,
+            and ranked above Anthropic's own documentation. That happened in about 8 weeks.
           </p>
-          <p class="about__bio" style="color: var(--color-text-muted); margin-bottom: 1.5rem; line-height: 1.8;">
-            The Claude Code guide series became the most-referenced independent resource for Claude Code on the internet —
-            ranked above Anthropic's own documentation, translated into 15+ languages by the community without any coordination,
-            cited by MongoDB Developer Advocates, shared in corporate Microsoft Teams and Slack workspaces, and featured on Hacker News.
-            That happened in about 8 weeks.
+
+          <!-- AI tool badges -->
+          <ul class="about__tools" aria-label="AI tools built">
+            <li class="about__tool-badge about__tool-badge--ai">RuleCatch.AI</li>
+            <li class="about__tool-badge about__tool-badge--ai">MDD - Manual Driven Development</li>
+            <li class="about__tool-badge about__tool-badge--ai">CLAUDE Code Mastery Guides</li>
+            <li class="about__tool-badge about__tool-badge--ai">Claude Code Starter Kit</li>
+            <li class="about__tool-badge about__tool-badge--blue">SwarmK</li>
+            <li class="about__tool-badge">Clip2Path</li>
+            <li class="about__tool-badge">Classpresso</li>
+          </ul>
+
+          <p class="about__bio">
+            Full-stack architect at Gradus Group since 2017, MongoDB, Node.js, Docker Swarm, React,
+            with 99.99% uptime over 8 years on production infrastructure.
+            The same pattern recognition that cracked the Zodiac Killer's Z13 & Z32 ciphers
+            applies to every hard technical problem.
           </p>
-          <p class="about__bio" style="color: var(--color-text-muted); margin-bottom: 2rem; line-height: 1.8;">
-            The cipher work started as curiosity and became something else entirely.
-            The same pattern recognition that solves 55-year-old mysteries applies to every hard technical problem.
-            Stop accepting the comfortable assumption that the problem is hard.
-            Start asking whether the answer was always obvious.
-          </p>
-          <dl style="display:grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.5rem; font-size: 0.9rem;">
-            <dt style="color: var(--color-text-muted); font-family: var(--font-mono);">Views</dt>
-            <dd style="color: var(--color-text);">2M+ across published technical content</dd>
+
+          <dl style="display:grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.5rem; font-size: 0.875rem; margin-top: var(--space-6, 1.5rem);">
+            <dt style="color: var(--color-text-muted); font-family: var(--font-mono);">AI reach</dt>
+            <dd style="color: var(--color-text);">2M+ views · 15+ languages · cited by MongoDB</dd>
             <dt style="color: var(--color-text-muted); font-family: var(--font-mono);">Stars</dt>
             <dd style="color: var(--color-text);">900+ GitHub stars</dd>
+            <dt style="color: var(--color-text-muted); font-family: var(--font-mono);">Infra</dt>
+            <dd style="color: var(--color-text);">99.99% uptime · 8 years · MongoDB + Docker Swarm</dd>
             <dt style="color: var(--color-text-muted); font-family: var(--font-mono);">Started</dt>
             <dd style="color: var(--color-text);">Age 6 on a Commodore 64</dd>
-            <dt style="color: var(--color-text-muted); font-family: var(--font-mono);">Hardware</dt>
-            <dd style="color: var(--color-text);">10,000+ PCs built</dd>
           </dl>
         </div>
-        <div class="about__visual" aria-hidden="true">
-          <!-- Portrait placeholder -->
-          <div style="aspect-ratio: 4/5; border-radius: 12px; background: radial-gradient(ellipse at 50% 30%, oklch(0.28 0.20 196 / 0.4) 0%, transparent 60%), radial-gradient(ellipse at 50% 80%, oklch(0.25 0.18 292 / 0.3) 0%, transparent 60%), oklch(0.09 0.03 260); position: relative; overflow: hidden;">
-            <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: oklch(0.78 0.15 196 / 0.6);">// portrait pending</div>
-          </div>
+        <div class="about__visual">
+          <picture class="about__portrait">
+            <source srcset="/images/og/profile_pic_tim_carter_clausen.webp" type="image/webp">
+            <img src="/images/og/profile_pic_tim_carter_clausen.jpg"
+                 alt="Tim Carter Clausen"
+                 loading="lazy" decoding="async">
+          </picture>
         </div>
       </div>
     </div>
@@ -778,57 +1032,52 @@
 
 </main>
 
-<!-- Footer -->
+<!-- ─── Footer ─── -->
 <footer role="contentinfo" class="site-footer">
   <div class="container">
     <div class="footer__grid">
       <div class="footer__brand">
-        <a href="/" class="nav__logo" style="margin-bottom: 0.75rem; display: inline-flex;">
-          <svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 32 32">
-            <rect width="32" height="32" rx="6" fill="oklch(0.12 0.03 260)"/>
-            <text x="16" y="22" text-anchor="middle" font-family="monospace" font-weight="700" font-size="15" fill="oklch(0.78 0.15 196)">TD</text>
+        <a href="/" aria-label="TheDecipherist, home" class="nav__logo" style="border-right:none; padding-right:0; margin-right:0; color: oklch(0.55 0.025 248);">
+          <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="6" fill="oklch(0.18 0.04 248)"/>
+            <text x="16" y="22" text-anchor="middle" font-family="monospace" font-weight="700" font-size="14" fill="oklch(0.72 0.20 145)">TD</text>
           </svg>
-          <span class="nav__logo-text">TheDecipherist</span>
+          <span>TheDecipherist</span>
         </a>
         <p class="footer__tagline">// Building what doesn't exist yet.</p>
       </div>
       <nav aria-label="Footer navigation" class="footer__nav">
         <ul role="list">
-          <li><a href="/articles/">Articles</a></li>
-          <li><a href="/projects/">Projects</a></li>
-          <li><a href="/resume/">Résumé</a></li>
-          <li><a href="/cipher/">Cipher Work</a></li>
+          <li><a href="https://thedecipherist.com/articles/" rel="noopener">Articles</a></li>
+          <li><a href="https://thedecipherist.com/projects/" rel="noopener">Projects</a></li>
+          <li><a href="https://thedecipherist.com/resume/" rel="noopener">Résumé</a></li>
         </ul>
       </nav>
       <nav aria-label="Social links" class="footer__social">
         <ul role="list">
           <li>
-            <a href="https://github.com/TheDecipherist" rel="external noopener me"
-               aria-label="GitHub — TheDecipherist">
+            <a href="https://github.com/TheDecipherist" rel="external noopener me" aria-label="GitHub, TheDecipherist">
               <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
               </svg>
             </a>
           </li>
           <li>
-            <a href="https://reddit.com/u/TheDecipherist" rel="external noopener me"
-               aria-label="Reddit — u/TheDecipherist">
+            <a href="https://reddit.com/u/TheDecipherist" rel="external noopener me" aria-label="Reddit, u/TheDecipherist">
               <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
               </svg>
             </a>
           </li>
           <li>
-            <a href="https://twitter.com/TheDecipherist" rel="external noopener me"
-               aria-label="Twitter — @TheDecipherist">
+            <a href="https://twitter.com/TheDecipherist" rel="external noopener me" aria-label="Twitter, @TheDecipherist">
               <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </a>
           </li>
           <li>
-            <a href="https://linkedin.com/in/tim-carter-9b1b1978" rel="external noopener me"
-               aria-label="LinkedIn — Tim Carter Clausen">
+            <a href="https://linkedin.com/in/tim-carter-9b1b1978" rel="external noopener me" aria-label="LinkedIn, Tim Carter Clausen">
               <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
@@ -842,20 +1091,18 @@
         <a href="mailto:me@thedecipherist.com">me@thedecipherist.com</a>
       </address>
       <p>
-        <small>
-          &copy; <time datetime="2026">2026</time> Tim Carter Clausen · TheDecipherist
-        </small>
+        <small>&copy; <time datetime="2026">2026</time> Tim Carter Clausen · TheDecipherist</small>
       </p>
     </div>
   </div>
 </footer>
 
-<!-- GSAP from CDN — defer, never blocking -->
+<!-- GSAP, defer, never blocking -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrambleTextPlugin.min.js" defer></script>
 
-<!-- Three.js — only after full page load -->
+<!-- Three.js hero particles, only after full page load -->
 <script type="module">
   window.addEventListener('load', () => {
     import('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
@@ -864,14 +1111,10 @@
   }, { once: true });
 </script>
 
-<!-- Houdini Paint Worklet -->
-<script>
-  if ('paintWorklet' in CSS) {
-    window.addEventListener('DOMContentLoaded', () => {
-      CSS.paintWorklet.addModule('/js/cipher-grid.worklet.js');
-    }, { once: true });
-  }
-</script>
+<!-- Section canvas particles -->
+<script type="module" src="/js/github-repos.js"></script>
+<script type="module" src="/js/github-stars.js"></script>
+<script type="module" src="/js/section-particles.js"></script>
 
 <!-- Main module -->
 <script type="module" src="/js/main.js"></script>

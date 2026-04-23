@@ -4,15 +4,15 @@
   /* ─── Orb drift animations (hero mesh gradient) ─── */
 
   @keyframes orb-1-drift {
-    0%   { --orb-x: 15%; --orb-y: 40%; --orb-hue: 196deg; }
-    50%  { --orb-x: 35%; --orb-y: 60%; --orb-hue: 210deg; }
-    100% { --orb-x: 15%; --orb-y: 40%; --orb-hue: 196deg; }
+    0%   { --orb-x: 15%; --orb-y: 40%; --orb-hue: 145deg; }
+    50%  { --orb-x: 35%; --orb-y: 60%; --orb-hue: 158deg; }
+    100% { --orb-x: 15%; --orb-y: 40%; --orb-hue: 145deg; }
   }
 
   @keyframes orb-2-drift {
-    0%   { --orb-2-x: 70%; --orb-2-hue: 292deg; }
-    50%  { --orb-2-x: 85%; --orb-2-hue: 280deg; }
-    100% { --orb-2-x: 70%; --orb-2-hue: 292deg; }
+    0%   { --orb-2-x: 70%; --orb-2-hue: 48deg; }
+    50%  { --orb-2-x: 85%; --orb-2-hue: 38deg; }
+    100% { --orb-2-x: 70%; --orb-2-hue: 48deg; }
   }
 
   /* ─── Text shimmer (hero headline + section titles) ─── */

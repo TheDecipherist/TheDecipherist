@@ -9,36 +9,15 @@
     padding-inline: var(--container-pad);
   }
 
-  .container--narrow {
-    max-width: 860px;
-  }
+  .container--narrow { max-width: 860px; }
+  .container--wide   { max-width: 1440px; }
 
-  .container--wide {
-    max-width: 1440px;
-  }
-
-  /* ─── Article grid ─── */
-  .articles-grid {
+  /* ─── Footer grid ─── */
+  .footer__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
-    gap: var(--space-6);
-  }
-
-  /* ─── Projects masonry grid ─── */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    grid-template-rows: masonry;
-    gap: var(--space-6);
-  }
-
-  /* ─── Stats grid ─── */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: var(--space-8);
-    align-items: center;
-    justify-items: center;
+    grid-template-columns: 1fr auto auto;
+    gap: var(--space-12);
+    align-items: start;
   }
 
   /* ─── Two-column layout ─── */
@@ -49,31 +28,13 @@
     align-items: center;
   }
 
-  @container (width < 720px) {
-    .layout-two-col {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* ─── Footer grid ─── */
-  .footer__grid {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    gap: var(--space-12);
-    align-items: start;
-  }
-
   @media (max-width: 768px) {
     .footer__grid {
       grid-template-columns: 1fr;
       gap: var(--space-8);
     }
 
-    .articles-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .projects-grid {
+    .layout-two-col {
       grid-template-columns: 1fr;
     }
   }

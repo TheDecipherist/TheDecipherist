@@ -1,39 +1,5 @@
 @layer base;
 
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono-subset.woff2') format('woff2');
-  font-display: swap;
-  font-weight: 400;
-  font-style: normal;
-  size-adjust: 97.5%;
-  ascent-override: 95%;
-  descent-override: 25%;
-  line-gap-override: 0%;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono-subset.woff2') format('woff2');
-  font-display: swap;
-  font-weight: 700;
-  font-style: normal;
-  size-adjust: 97.5%;
-  ascent-override: 95%;
-  descent-override: 25%;
-  line-gap-override: 0%;
-}
-
-@font-face {
-  font-family: 'Clash Display';
-  src: url('/fonts/clash-display-subset.woff2') format('woff2');
-  font-display: swap;
-  font-weight: 600;
-  font-style: normal;
-  size-adjust: 102%;
-  ascent-override: 90%;
-}
-
 @layer base {
   :root {
     --font-mono:    'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;

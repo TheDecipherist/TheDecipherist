@@ -5,61 +5,153 @@
   .section {
     position: relative;
     padding-block: var(--section-pad-y);
-    overflow: hidden;
   }
 
-  .section::after {
-    content: '';
+  /* Section canvas — sits behind all content */
+  .section-canvas {
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.04;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 0;
   }
 
-  .section > * {
+  /* Lift content above canvas */
+  .section > .container {
     position: relative;
     z-index: 1;
   }
 
-  /* ─── Section backgrounds ─── */
-  .section--void   { background: var(--color-void); }
-  .section--space  { background: var(--color-space); }
-  .section--surface{ background: var(--color-surface); }
+  /* ─── Section backgrounds (light theme) ─── */
+  .section--stats    { background: var(--color-bg); }
+  .section--repos    { background: var(--color-surface); }
+  .section--articles { background: var(--color-bg); }
+  .section--projects { background: var(--color-surface); }
+  .section--about    { background: var(--color-surface-2); }
+  .section--void     { background: var(--color-void); }
+
+  /* ─── Section header row — heading block + optional controls ─── */
+  .section__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
+    flex-wrap: wrap;
+  }
+
+  .section__header-text {
+    flex: 1;
+    min-width: 220px;
+  }
 
   /* ─── Section heading ─── */
   .section__heading {
     font-size: var(--text-h2);
-    margin-bottom: var(--space-16);
-    text-align: center;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0;
+  }
+
+  /* Editorial two-tone: .section__heading em highlights one word */
+  .section__heading em {
+    font-style: normal;
+    color: var(--color-green);
+  }
+
+  /* Dark section variant (hero bg) */
+  .section--void .section__heading {
+    color: var(--color-hero-text);
   }
 
   .section__subheading {
     font-size: var(--text-body);
     color: var(--color-text-muted);
-    text-align: center;
-    margin-top: calc(-1 * var(--space-12));
-    margin-bottom: var(--space-16);
-    max-width: 60ch;
-    margin-inline: auto;
+    margin-top: var(--space-4);
+    line-height: 1.65;
+    max-width: 68ch;
   }
 
-  /* ─── Category label ─── */
+  /* ─── Category label (above headings) ─── */
   .category-label {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
     font-family: var(--font-mono);
     font-size: var(--text-small);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
-    color: var(--color-teal);
-    margin-bottom: var(--space-4);
+    color: var(--color-green);
+    margin-bottom: var(--space-3);
   }
 
   .category-label::before {
     content: '//';
-    opacity: 0.5;
+    opacity: 0.45;
+  }
+
+  /* Dark section variant */
+  .section--void .category-label {
+    color: var(--color-green);
+  }
+
+  /* ─── Section CTA ─── */
+  .section__cta {
+    text-align: center;
+    margin-top: var(--space-12);
+  }
+
+  /* ─── About AI tool badges ─── */
+  .about__tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin-block: var(--space-6);
+  }
+
+  .about__tool-badge {
+    font-family: var(--font-mono);
+    font-size: clamp(0.68rem, 1.8vw, 0.72rem);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    background: oklch(0.14 0.04 248 / 0.07);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+  }
+
+  .about__tool-badge--ai {
+    background: oklch(0.72 0.200 145 / 0.10);
+    color: var(--color-green-dim);
+    border-color: oklch(0.72 0.200 145 / 0.25);
+  }
+
+  .about__tool-badge--blue {
+    background: oklch(0.60 0.130 240 / 0.10);
+    color: oklch(0.45 0.120 240);
+    border-color: oklch(0.60 0.130 240 / 0.28);
+  }
+
+  /* ─── About portrait ─── */
+  .about__portrait {
+    display: block;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-card-lg);
+  }
+
+  .about__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    aspect-ratio: 3 / 4;
   }
 }

@@ -1,78 +1,88 @@
 @layer components;
 
 @layer components {
-  /* ─── Section wave dividers via clip-path: shape() ─── */
-  /* Each section gets a unique profile. Negative margin-bottom creates overlap. */
+  /*
+   * Wavy bottom edges via polygon() — sampled from a sine curve.
+   * y(x) = center + amplitude × sin(cycles × 2π × x/100)
+   *
+   * hero:     2.5 cycles, amplitude 4%, center 95%   → range 91–99%
+   * stats:    2 cycles,   amplitude 3%, center 95%   → range 92–98%
+   * articles: 1.5 cycles, amplitude 3%, center 94%   → range 91–97%
+   * projects: 1 cycle,    amplitude 2%, center 96%   → range 94–98%
+   */
 
+  /* ─── Hero bottom wave ─── */
   .section--hero {
-    clip-path: shape(
-      from 0% 0%,
-      hline to 100%,
-      vline to 92%,
-      curve to 0% 100% with 30% 86%, 70% 106%
+    /* clip-path: polygon(
+      0% 0%, 100% 0%, 100% 95%,
+      95% 97.83%, 90% 99%,   85% 97.83%, 80% 95%,
+      75% 92.17%, 70% 91%,   65% 92.17%, 60% 95%,
+      55% 97.83%, 50% 99%,   45% 97.83%, 40% 95%,
+      35% 92.17%, 30% 91%,   25% 92.17%, 20% 95%,
+      15% 97.83%, 10% 99%,   5%  97.83%, 0%  95%
     );
-    margin-bottom: -4rem;
-    padding-bottom: 8rem;
+    margin-bottom: -6rem; */
+    padding-bottom: 10rem;
   }
 
+  /* ─── Stats bottom wave ─── */
   .section--stats {
-    clip-path: shape(
-      from 0% 4%,
-      curve to 100% 0% with 40% 8%, 60% -2%,
-      vline to 93%,
-      curve to 0% 100% with 25% 88%, 75% 100%
+    clip-path: polygon(
+      0% 0%, 100% 0%, 100% 95%,
+      95% 97.12%, 90% 98%,   85% 97.12%, 80% 95%,
+      75% 92.88%, 70% 92%,   65% 92.88%, 60% 95%,
+      55% 97.12%, 50% 98%,   45% 97.12%, 40% 95%,
+      35% 92.88%, 30% 92%,   25% 92.88%, 20% 95%,
+      15% 97.12%, 10% 98%,   5%  97.12%, 0%  95%
     );
-    margin-bottom: -4rem;
-    padding-bottom: 8rem;
+    margin-bottom: -6rem;
+    padding-bottom: 10rem;
   }
 
+  /* ─── Articles bottom wave (offset phase) ─── */
   .section--articles {
-    clip-path: shape(
-      from 0% 3%,
-      curve to 100% 0% with 20% 6%, 80% -1%,
-      vline to 94%,
-      curve to 0% 100% with 60% 90%, 20% 106%
+    /* clip-path: polygon(
+      0% 0%, 100% 0%, 100% 97%,
+      92% 94%,   83% 91%,   75% 94%,
+      67% 97%,   58% 94%,   50% 91%,
+      42% 94%,   33% 97%,   25% 94%,
+      17% 91%,   8%  94%,   0%  97%
     );
-    margin-bottom: -4rem;
-    padding-bottom: 8rem;
+    margin-bottom: -5rem; */
+    padding-bottom: 9rem;
   }
 
+  /* ─── Projects bottom wave ─── */
   .section--projects {
-    clip-path: shape(
-      from 0% 2%,
-      curve to 100% 0% with 50% 7%, 75% -2%,
-      vline to 95%,
-      curve to 0% 100% with 70% 89%, 30% 102%
-    );
-    margin-bottom: -4rem;
-    padding-bottom: 8rem;
-  }
-
-  .section--about {
-    clip-path: shape(
-      from 0% 4%,
-      curve to 100% 1% with 35% 9%, 65% -1%,
-      vline to 96%,
-      curve to 0% 100% with 40% 91%, 80% 103%
+    clip-path: polygon(
+      0% 0%, 100% 0%, 100% 96%,
+      75% 98%,   50% 94%,   25% 98%,   0% 96%
     );
     padding-bottom: 8rem;
   }
 
-  /* Hero wave breathes on scroll */
-  @media (prefers-reduced-motion: no-preference) {
-    @keyframes wave-breathe {
-      50% {
-        clip-path: shape(
-          from 0% 0%,
-          hline to 100%,
-          vline to 90%,
-          curve to 0% 100% with 35% 84%, 65% 108%
-        );
-      }
+  /* ─── Mobile: reduce overlap padding, simpler wave ─── */
+  @media (max-width: 640px) {
+    .section--hero {
+      padding-bottom: 5rem;
+      margin-bottom: -3rem;
     }
 
-    .section--hero {
-      animation: wave-breathe 7s ease-in-out infinite;
+    .section--stats {
+      clip-path: polygon(0% 0%, 100% 1%, 100% 97%, 0% 100%);
+      margin-bottom: -3rem;
+      padding-bottom: 5rem;
+    }
+
+    .section--articles {
+      clip-path: polygon(0% 1%, 100% 0%, 100% 100%, 0% 98%);
+      margin-bottom: -3rem;
+      padding-bottom: 5rem;
+    }
+
+    .section--projects {
+      clip-path: polygon(0% 0%, 100% 1%, 100% 99%, 0% 100%);
+      padding-bottom: 4rem;
     }
   }
 }

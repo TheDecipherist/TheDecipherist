@@ -1,62 +1,88 @@
 @layer components;
 
 @layer components {
-  /* ─── Stats section ─── */
+  /* ─── Stats section — compact horizontal bar ─── */
   .section--stats {
-    background: var(--color-space);
-    padding-block: var(--section-pad-y);
+    padding-block: var(--space-12);
   }
 
-  /* ─── Stat items ─── */
+  /* ─── Bordered stats bar ─── */
+  .stats-bar {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    flex-wrap: wrap;
+  }
+
   .stat-item {
+    flex: 1;
+    min-width: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-3);
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-8) var(--space-6);
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
     text-align: center;
-  }
-
-  .stat-number {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 700;
-    line-height: 1;
-    /* Gradient text */
-    background: linear-gradient(
-      in oklch 135deg,
-      var(--color-teal),
-      var(--color-violet)
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    /* Scroll-driven counter */
-    animation: count-up linear both;
-    animation-timeline: view();
-    animation-range: entry 20% cover 60%;
-    counter-reset: stat-count var(--count-val);
-  }
-
-  .stat-number span {
-    /* Static fallback text — shown when CSS counters aren't supported */
-    display: inline;
-  }
-
-  .stat-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-small);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    max-width: 14ch;
-  }
-
-  /* Reveal animation for stat items */
-  .stat-item {
     animation: stat-rise linear both;
     animation-timeline: view();
-    animation-range: entry 0% cover 40%;
-    animation-delay: calc(sibling-index() * 60ms);
+    animation-range: entry 0% cover 50%;
+    animation-delay: calc(sibling-index() * 50ms);
+  }
+
+  /* Last item per row: no right border */
+  .stat-item:last-child { border-right: none; }
+
+  /* Stat number */
+  .stat-number {
+    font-family: var(--font-mono);
+    font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    display: block;
+  }
+
+  /* Stat label */
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: clamp(0.64rem, 1.8vw, 0.72rem);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    max-width: 18ch;
+    line-height: 1.4;
+  }
+
+  /* Mobile: 2-per-row grid, clean borders, no scroll animation */
+  @media (max-width: 640px) {
+    .stats-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .stat-item {
+      min-width: 0;
+      padding: var(--space-6) var(--space-4);
+      border-right: 1px solid var(--color-border);
+      /* Disable scroll-driven animation — items below fold stay invisible otherwise */
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Remove right border on every even item (right column) */
+    .stat-item:nth-child(2n) { border-right: none; }
+
+    /* Remove bottom border on last two items */
+    .stat-item:nth-last-child(-n+2) { border-bottom: none; }
+
+    .stat-number { font-size: clamp(1.3rem, 7vw, 1.8rem); }
+    .stat-label  { font-size: 0.62rem; }
   }
 }

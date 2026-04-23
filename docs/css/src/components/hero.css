@@ -1,40 +1,41 @@
 @layer components;
 
 @layer components {
-  /* ─── Hero section ─── */
+  /* ─── Editorial dark hero — full-height, bottom-left ─── */
   .section--hero {
-    min-height: 100dvh;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    /* Animated mesh gradient via @property orbs */
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
     animation:
-      orb-1-drift 12s ease-in-out infinite,
-      orb-2-drift 9s ease-in-out infinite;
+      orb-1-drift 14s ease-in-out infinite,
+      orb-2-drift 11s ease-in-out infinite;
     background:
       radial-gradient(
         circle at var(--orb-x) var(--orb-y),
-        oklch(0.35 0.28 var(--orb-hue) / 0.5) 0%,
+        oklch(0.30 0.24 var(--orb-hue) / 0.55) 0%,
         transparent 50%
       ),
       radial-gradient(
-        circle at var(--orb-2-x) 30%,
-        oklch(0.30 0.24 var(--orb-2-hue) / 0.4) 0%,
+        circle at var(--orb-2-x) 25%,
+        oklch(0.28 0.20 var(--orb-2-hue) / 0.45) 0%,
         transparent 45%
       ),
       radial-gradient(
-        circle at 50% 80%,
-        oklch(0.25 0.18 248 / 0.3) 0%,
-        transparent 55%
+        circle at 55% 85%,
+        oklch(0.22 0.16 55 / 0.3) 0%,
+        transparent 50%
       ),
       var(--color-void);
   }
 
-  /* Hero background image / fallback */
+  /* Hero background image — sits above dark base overlay */
   .hero__bg-picture {
     position: absolute;
     inset: 0;
-    z-index: 0;
+    z-index: 2;
     pointer-events: none;
   }
 
@@ -42,84 +43,163 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.35;
-    mix-blend-mode: luminosity;
+    object-position: center;
+    opacity: 1;
   }
 
+  /* Dark vignette overlay — base layer below image */
   .hero__bg-fallback {
     position: absolute;
     inset: 0;
+    z-index: 1;
     background:
-      radial-gradient(ellipse at 20% 50%, oklch(0.28 0.20 196 / 0.6) 0%, transparent 55%),
-      radial-gradient(ellipse at 80% 25%, oklch(0.25 0.18 292 / 0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 18% 55%, oklch(0.28 0.22 145 / 0.5) 0%, transparent 50%),
+      radial-gradient(ellipse at 78% 22%, oklch(0.26 0.18 48 / 0.4) 0%, transparent 48%),
       var(--color-void);
+    pointer-events: none;
   }
 
-  /* Three.js canvas overlay */
+  /* Three.js canvas — particles above the image */
   #hero-canvas {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: 3;
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.75;
   }
 
-  /* Hero content */
+  /* Hero content — bottom-left editorial layout */
   .hero__content {
     position: relative;
-    z-index: 2;
-    max-width: 900px;
-    padding-inline: var(--container-pad);
+    z-index: 4;
+    max-width: min(820px, 75vw);
+    padding-block-start: calc(var(--nav-height) + var(--nav-top) * 2 + var(--space-32));
+    padding-block-end: clamp(4rem, 8vw, 7rem);
   }
 
+  /* Eyebrow */
   .hero__eyebrow {
     font-family: var(--font-mono);
-    font-size: var(--text-mono);
-    color: var(--color-teal);
-    letter-spacing: 0.08em;
+    font-size: var(--text-small);
+    color: var(--color-green);
+    letter-spacing: 0.06em;
     margin-bottom: var(--space-6);
-    opacity: 0.85;
+    opacity: 0.8;
   }
 
-  .hero__eyebrow-code {
-    opacity: 0.7;
-  }
-
+  /* Headline — very large, white-to-green gradient */
   .hero__headline {
-    font-size: var(--text-hero);
     font-family: var(--font-display);
+    font-size: var(--text-hero);
     font-weight: 600;
     letter-spacing: -0.03em;
-    line-height: 0.95;
+    line-height: 0.93;
     margin-bottom: var(--space-6);
-    /* Gradient text */
     background: linear-gradient(
-      in oklch 90deg,
-      oklch(0.88 0.18 196),
-      oklch(0.72 0.20 248),
-      oklch(0.65 0.22 292)
+      in oklch 105deg,
+      oklch(0.96 0.010 60),
+      oklch(0.90 0.012 60),
+      oklch(0.82 0.22 145) 72%,
+      oklch(0.72 0.20 145)
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     background-size: 200% 100%;
-    animation: text-shimmer 6s ease-in-out infinite alternate;
+    animation: text-shimmer 8s ease-in-out infinite alternate;
   }
 
+  /* Tagline */
   .hero__tagline {
     font-size: var(--text-h3);
-    color: var(--color-text-muted);
+    color: oklch(0.68 0.022 248);
     margin-bottom: var(--space-12);
     font-family: var(--font-body);
     font-weight: 400;
-    line-height: 1.4;
+    line-height: 1.5;
+    max-width: 52ch;
   }
 
+  /* CTA group */
   .hero__cta-group {
     display: flex;
     gap: var(--space-4);
-    justify-content: center;
     flex-wrap: wrap;
+  }
+
+  /* ─── Buttons ─── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border-radius: var(--radius-full);
+    transition:
+      transform var(--transition-base),
+      box-shadow var(--transition-base),
+      background var(--transition-fast),
+      color var(--transition-fast);
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  /* Hero primary — cream on dark */
+  .btn--primary {
+    background: var(--color-hero-text);
+    color: var(--color-void);
+    border-color: transparent;
+  }
+
+  .btn--primary:hover {
+    background: oklch(0.92 0.012 60);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px oklch(0.96 0.010 60 / 0.14);
+  }
+
+  /* Ghost on dark */
+  .btn--ghost {
+    background: transparent;
+    color: oklch(0.78 0.015 60);
+    border-color: oklch(0.96 0.010 60 / 0.22);
+  }
+
+  .btn--ghost:hover {
+    background: oklch(0.96 0.010 60 / 0.08);
+    border-color: oklch(0.96 0.010 60 / 0.42);
+    color: oklch(0.96 0.010 60);
+    transform: translateY(-2px);
+  }
+
+  /* Dark button for light sections */
+  .btn--dark {
+    background: var(--color-accent);
+    color: oklch(0.96 0.010 60);
+    border-color: transparent;
+  }
+
+  .btn--dark:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px oklch(0.22 0.06 248 / 0.20);
+  }
+
+  /* Outline for light sections */
+  .btn--outline {
+    background: transparent;
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+  }
+
+  .btn--outline:hover {
+    border-color: var(--color-text-muted);
+    background: oklch(0.14 0.04 248 / 0.04);
+    transform: translateY(-2px);
   }
 
   /* Scroll indicator */
@@ -128,13 +208,13 @@
     bottom: var(--space-8);
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2;
+    z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--space-2);
-    opacity: 0.4;
-    animation: scroll-fade 2s ease-in-out infinite;
+    opacity: 0.35;
+    animation: scroll-fade 2.5s ease-in-out infinite;
   }
 
   .hero__scroll-line {
@@ -143,43 +223,14 @@
     height: 3rem;
     background: linear-gradient(
       in oklch to bottom,
-      var(--color-teal),
+      oklch(0.72 0.200 145),
       transparent
     );
   }
 
-  /* Buttons */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-3) var(--space-8);
-    font-family: var(--font-mono);
-    font-size: var(--text-mono);
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    border-radius: var(--radius-full);
-    transition: transform var(--transition-base), box-shadow var(--transition-base);
-  }
-
-  .btn--primary {
-    background: var(--color-teal);
-    color: var(--color-void);
-  }
-
-  .btn--primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px oklch(0.78 0.15 196 / 0.4);
-  }
-
-  .btn--ghost {
-    border: 1px solid oklch(from var(--color-teal) l c h / 0.4);
-    color: var(--color-teal);
-  }
-
-  .btn--ghost:hover {
-    border-color: var(--color-teal);
-    background: oklch(from var(--color-teal) l c h / 0.08);
-    transform: translateY(-2px);
+  @media (max-width: 768px) {
+    .hero__content {
+      max-width: 100%;
+    }
   }
 }
