@@ -1,0 +1,89 @@
+{
+  "projects": [
+    {
+      "id": "rulecatch",
+      "name": "RuleCatch",
+      "description": "Real-time rule enforcement for Claude Code. 208+ rules across 18 categories catch violations as they happen, zero token overhead, AES-256-GCM encrypted, GDPR-compliant with full US/EU data isolation.",
+      "link": { "text": "rulecatch.ai →", "url": "https://rulecatch.ai" },
+      "image": "/images/projects/rulecatch.webp",
+      "github": "TheDecipherist/rulecatch-sdk"
+    },
+    {
+      "id": "strictdb",
+      "name": "StrictDB",
+      "description": "Unified database driver, one API for MongoDB, PostgreSQL, MySQL, MSSQL, SQLite, and Elasticsearch. AI-first guardrails, self-correcting errors, schema discovery, and an MCP server with 14 tools.",
+      "link": { "text": "strictdb.com →", "url": "https://strictdb.com" },
+      "image": "/images/projects/strictdb.webp",
+      "github": "TheDecipherist/strictdb"
+    },
+    {
+      "id": "zodiac-solved",
+      "name": "The Zodiac Solved",
+      "description": "Cryptographic analysis identifying the Zodiac Killer through decoded cipher evidence. Systematic extraction of hidden messages revealing the name and address encoded in the infamous ciphers.",
+      "link": { "text": "thezodiacsolved.com →", "url": "https://thezodiacsolved.com" },
+      "image": "/images/projects/thezodiacsolved.webp"
+    },
+    {
+      "id": "dockerdoctor",
+      "name": "DockerDoctor",
+      "description": "Interactive CLI that lints your Dockerfile, compose file, and running containers. 50 checks across 11 categories with auto-fix, TUI browser, and CI/CD integration.",
+      "link": { "text": "Read more →", "url": "https://thedecipherist.github.io/dockerdoctor/" },
+      "image": "/images/projects/dockerdoctor.webp",
+      "github": "TheDecipherist/dockerdoctor"
+    },
+    {
+      "id": "classpresso",
+      "name": "Classpresso",
+      "description": "Build-time CSS class consolidation tool. Reduces browser workload by eliminating redundant utility classes. 50% faster style recalculation and 42% faster First Paint.",
+      "link": { "text": "classpresso.com →", "url": "https://classpresso.com" },
+      "image": "/images/projects/classpresso.webp",
+      "github": "TheDecipherist/classpresso"
+    },
+    {
+      "id": "classmcp",
+      "name": "ClassMCP",
+      "description": "Semantic CSS framework for AI code generation. MCP server that reduces token consumption by ~90% compared to verbose utility classes. Works with Claude, ChatGPT, Copilot, and more.",
+      "link": { "text": "classmcp.com →", "url": "https://classmcp.com" },
+      "image": "/images/projects/classmcp.webp",
+      "github": "TheDecipherist/classmcp"
+    },
+    {
+      "id": "tersejson",
+      "name": "TerseJSON",
+      "description": "Transparent JSON key compression library. Reduces memory usage and network bandwidth by 30–80% using lazy-loading proxies that only allocate memory for accessed fields.",
+      "link": { "text": "tersejson.com →", "url": "https://tersejson.com" },
+      "image": "/images/projects/tersejson.webp",
+      "github": "TheDecipherist/tersejson"
+    },
+    {
+      "id": "credhopper",
+      "name": "CredHopper",
+      "description": "Chrome extension for multi-profile credential management. Organize credentials by client, one-click autofill, AES-256-GCM encryption. Built for agencies and freelancers.",
+      "link": { "text": "credhopper.com →", "url": "https://credhopper.com" },
+      "image": "/images/projects/credhopper.webp",
+      "github": "TheDecipherist/credhopper"
+    },
+    {
+      "id": "kactuzmusic",
+      "name": "Kactuz Music",
+      "description": "Contemporary Christian music bringing the living Word of God to music. Soulful vocals, cinematic textures, and pop-infused worship arrangements rooted in Scripture.",
+      "link": { "text": "kactuzmusic.com →", "url": "https://kactuzmusic.com" },
+      "image": "/images/projects/kactuzmusic.webp"
+    },
+    {
+      "id": "sacredspaces",
+      "name": "Sacred Spaces Build",
+      "description": "Premium contractor services website for Sacred Spaces NYC, Inc. High-end custom homes, seamless additions, and transformative remodels in the greater New York area.",
+      "link": { "text": "sacredspacesbuild.com →", "url": "https://sacredspacesbuild.com" },
+      "image": "/images/projects/sacredspacesbuild.webp"
+    },
+    {
+      "id": "wavesurf",
+      "name": "Wavesurf React Player",
+      "description": "Production-ready React audio player with waveform visualization. Global state management, pre-computed peaks for instant rendering, persistent mini-player, and TypeScript support.",
+      "link": { "text": "GitHub →", "url": "https://github.com/TheDecipherist/wavesurfer-react-player" },
+      "image": "/images/projects/wavesurf.webp",
+      "github": "TheDecipherist/wavesurfer-react-player"
+    }
+  ]
+}
