@@ -171,12 +171,13 @@ function repoCardHTML(repo) {
   ].join('\n');
 }
 
-async function buildReposHTML() {
-  const headers = {};
-  if (process.env.GITHUB_TOKEN) {
-    headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
-  }
+function apiHeaders() {
+  const h = {};
+  if (process.env.GITHUB_TOKEN) h['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  return h;
+}
 
+async function buildReposHTML(headers) {
   const { status, body } = await httpsGet(GITHUB_API, headers);
   if (status !== 200 || !Array.isArray(body)) {
     throw new Error(`GitHub API returned ${status}: ${JSON.stringify(body).slice(0, 200)}`);
@@ -186,21 +187,101 @@ async function buildReposHTML() {
     .filter(r => !r.fork && !SKIP_REPOS.has(r.name))
     .sort((a, b) => b.stargazers_count - a.stargazers_count);
 
+  // Backfill missing descriptions from READMEs in parallel
+  await Promise.all(
+    repos
+      .filter(r => !r.description)
+      .map(async r => {
+        r.description = await fetchReadmeDesc(r.full_name, headers) || '';
+      })
+  );
+
   return repos.map(repoCardHTML).join('\n\n');
+}
+
+// ─── README description extraction ───────────────────────────────────────────
+
+function extractDescFromReadme(markdown) {
+  const lines = markdown.split('\n');
+  const paragraphs = [];
+  let current = [];
+
+  for (const line of lines) {
+    const t = line.trim();
+    const skip =
+      !t ||
+      t.startsWith('#') ||
+      t.startsWith('![') ||
+      t.startsWith('[![') ||
+      t.startsWith('<!--') ||
+      t.startsWith('<') ||
+      t.startsWith('---') ||
+      t.startsWith('```') ||
+      t.startsWith('|');
+    if (skip) {
+      if (current.length) { paragraphs.push(current.join(' ')); current = []; }
+    } else {
+      current.push(t);
+    }
+  }
+  if (current.length) paragraphs.push(current.join(' '));
+
+  for (const p of paragraphs) {
+    const clean = p
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
+      .replace(/`([^`]+)`/g, '$1')              // `code` → code
+      .replace(/\*\*([^*]+)\*\*/g, '$1')        // **bold** → bold
+      .replace(/\*([^*]+)\*/g, '$1')            // *italic* → italic
+      .trim();
+    if (clean.length > 30) return clean.length > 220 ? clean.slice(0, 217) + '...' : clean;
+  }
+  return null;
+}
+
+async function fetchReadmeDesc(repoFullName, headers) {
+  try {
+    const { status, body } = await httpsGet(
+      `https://api.github.com/repos/${repoFullName}/readme`,
+      headers
+    );
+    if (status !== 200 || !body.content) return null;
+    const markdown = Buffer.from(body.content, 'base64').toString('utf8');
+    return extractDescFromReadme(markdown);
+  } catch {
+    return null;
+  }
 }
 
 // ─── Projects ─────────────────────────────────────────────────────────────────
 
-function projectItemHTML(project, index) {
+async function fetchGithubDescs(projects, headers) {
+  const results = await Promise.all(
+    projects.map(async p => {
+      if (!p.github) return [p.id, null];
+      try {
+        const { status, body } = await httpsGet(`https://api.github.com/repos/${p.github}`, headers);
+        if (status !== 200) return [p.id, null];
+        const desc = body.description || await fetchReadmeDesc(p.github, headers);
+        return [p.id, desc || null];
+      } catch {
+        return [p.id, null];
+      }
+    })
+  );
+  return Object.fromEntries(results);
+}
+
+function projectItemHTML(project, index, githubDescs) {
   const num        = String(index + 1).padStart(2, '0');
   const githubAttr = project.github ? ` data-github="${project.github}"` : '';
+  const desc       = (githubDescs && githubDescs[project.id]) || project.description;
 
   return [
     `        <li class="project-item" aria-labelledby="proj-${project.id}-name"${githubAttr}>`,
     `          <div class="project-item__info">`,
     `            <span class="project-item__number" aria-hidden="true">${num}</span>`,
     `            <h3 id="proj-${project.id}-name" class="project-item__name">${project.name}</h3>`,
-    `            <p class="project-item__description">${project.description}</p>`,
+    `            <p class="project-item__description">${desc}</p>`,
     `            <div class="project-item__links">`,
     `              <a href="${project.link.url}" class="project-item__link" rel="external noopener">${project.link.text}</a>`,
     `            </div>`,
@@ -212,11 +293,11 @@ function projectItemHTML(project, index) {
   ].join('\n');
 }
 
-function buildProjectsHTML(projects) {
+function buildProjectsHTML(projects, githubDescs) {
   return [
     `      <ol class="projects-list" role="list" style="margin-top: var(--space-16, 4rem);">`,
     ``,
-    projects.map((p, i) => projectItemHTML(p, i)).join('\n\n'),
+    projects.map((p, i) => projectItemHTML(p, i, githubDescs)).join('\n\n'),
     ``,
     `      </ol>`,
   ].join('\n');
@@ -240,17 +321,24 @@ async function main() {
   const { articles } = JSON.parse(fs.readFileSync(ARTICLES_CONFIG, 'utf8'));
   const { projects } = JSON.parse(fs.readFileSync(PROJECTS_CONFIG, 'utf8'));
 
-  // Build repos (fail gracefully — rest of build continues)
+  const headers = apiHeaders();
+
+  // Fetch repos and project GitHub descriptions in parallel (both fail gracefully)
+  process.stdout.write('📡 Fetching GitHub data... ');
   let reposHTML;
-  process.stdout.write('📡 Fetching GitHub repos... ');
+  let githubDescs = {};
   try {
-    reposHTML = await buildReposHTML();
-    const count = (reposHTML.match(/class="repo-card"/g) || []).length;
-    console.log(`${count} repos`);
+    [reposHTML, githubDescs] = await Promise.all([
+      buildReposHTML(headers),
+      fetchGithubDescs(projects, headers),
+    ]);
+    const repoCount = (reposHTML.match(/class="repo-card"/g) || []).length;
+    const descCount = Object.values(githubDescs).filter(Boolean).length;
+    console.log(`${repoCount} repos, ${descCount}/${projects.length} project descriptions`);
   } catch (err) {
     console.log('failed');
     console.warn(`   ⚠️  ${err.message}`);
-    reposHTML = `    <p style="color:var(--color-text-muted);font-family:var(--font-mono);font-size:var(--text-small)">Could not load repos — check back soon.</p>`;
+    reposHTML = reposHTML || `    <p style="color:var(--color-text-muted);font-family:var(--font-mono);font-size:var(--text-small)">Could not load repos — check back soon.</p>`;
   }
 
   process.stdout.write('📝 Building articles HTML... ');
@@ -259,7 +347,7 @@ async function main() {
   console.log(`${articleCount} articles`);
 
   process.stdout.write('🔨 Building projects HTML... ');
-  const projectsHTML = buildProjectsHTML(projects);
+  const projectsHTML = buildProjectsHTML(projects, githubDescs);
   console.log(`${projects.length} projects`);
 
   // Inject into index.html

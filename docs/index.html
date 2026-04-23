@@ -164,6 +164,10 @@
   <section id="stats" class="section section--stats" aria-labelledby="stats-heading">
     
     <div class="container">
+      <div class="page-identity">
+        <h1 class="page-identity__title">The<em>Decipherist</em></h1>
+        <p class="page-identity__sub">Tim Carter Clausen</p>
+      </div>
       <h2 id="stats-heading" class="visually-hidden">By the numbers</h2>
       <ul role="list" class="stats-bar">
         <li class="stat-item">
@@ -240,6 +244,7 @@
     <a class="repo-card" href="https://github.com/TheDecipherist/tersejson" rel="external noopener"
        aria-label="tersejson, 12 stars">
       <span class="repo-card__name">tersejson</span>
+      <p class="repo-card__desc">Memory-efficient JSON processing. Lazy Proxy expansion uses 70% less RAM than JSON.parse.</p>
       <div class="repo-card__footer"><span class="repo-card__lang"><span class="repo-card__lang-dot" style="background:#3178c6" aria-hidden="true"></span>TypeScript</span><span class="repo-card__stars"><svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>12</span></div>
     </a>
 
@@ -253,6 +258,7 @@
     <a class="repo-card" href="https://github.com/TheDecipherist/dockerdoctor" rel="external noopener"
        aria-label="dockerdoctor, 4 stars">
       <span class="repo-card__name">dockerdoctor</span>
+      <p class="repo-card__desc">Interactive CLI that diagnoses and fixes Docker problems automatically. Lint your Dockerfile, compose file, and running containers — get actionable fixes, not just warnings.</p>
       <div class="repo-card__footer"><span class="repo-card__lang"><span class="repo-card__lang-dot" style="background:#3178c6" aria-hidden="true"></span>TypeScript</span><span class="repo-card__stars"><svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>4</span></div>
     </a>
 
@@ -273,6 +279,7 @@
     <a class="repo-card" href="https://github.com/TheDecipherist/compressmcp" rel="external noopener"
        aria-label="compressmcp, 2 stars">
       <span class="repo-card__name">compressmcp</span>
+      <p class="repo-card__desc">Lossless JSON compression for Claude Code. Intercepts MCP tool responses and compresses large JSON payloads before they enter Claude's context window, cutting token usage by 40% on average with zero data loss.</p>
       <div class="repo-card__footer"><span class="repo-card__lang"><span class="repo-card__lang-dot" style="background:#3178c6" aria-hidden="true"></span>TypeScript</span><span class="repo-card__stars"><svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>2</span></div>
     </a>
 
@@ -293,12 +300,14 @@
     <a class="repo-card" href="https://github.com/TheDecipherist/peelX" rel="external noopener"
        aria-label="peelX">
       <span class="repo-card__name">peelX</span>
+      <p class="repo-card__desc">Recursively extract nested archives and run every installer. One command, zero hassle.</p>
       <div class="repo-card__footer"><span class="repo-card__lang"><span class="repo-card__lang-dot" style="background:#3572a5" aria-hidden="true"></span>Python</span></div>
     </a>
 
     <a class="repo-card" href="https://github.com/TheDecipherist/tuimon" rel="external noopener"
        aria-label="tuimon">
       <span class="repo-card__name">tuimon</span>
+      <p class="repo-card__desc">View the full documentation site</p>
       <div class="repo-card__footer"><span class="repo-card__lang"><span class="repo-card__lang-dot" style="background:#3178c6" aria-hidden="true"></span>TypeScript</span></div>
     </a>
 
@@ -894,7 +903,7 @@
     <canvas class="section-canvas" aria-hidden="true"></canvas>
     <div class="container">
       <p class="category-label">Tools</p>
-      <h2 id="projects-heading" class="section__heading">Projects & Developer Tools</h2>
+      <h2 id="projects-heading" class="section__heading">Projects</h2>
       <p class="section__subheading">
         Projects built to solve real problems, tools I needed that didn't exist yet.
       </p>
@@ -906,7 +915,7 @@
           <div class="project-item__info">
             <span class="project-item__number" aria-hidden="true">01</span>
             <h3 id="proj-rulecatch-name" class="project-item__name">RuleCatch</h3>
-            <p class="project-item__description">Real-time rule enforcement for Claude Code. 208+ rules across 18 categories catch violations as they happen, zero token overhead, AES-256-GCM encrypted, GDPR-compliant with full US/EU data isolation.</p>
+            <p class="project-item__description">Official SDK for Rulecatch — AI coding analytics, monitoring, and rule enforcement for Claude Code, Cursor, and AI coding assistants</p>
             <div class="project-item__links">
               <a href="https://rulecatch.ai" class="project-item__link" rel="external noopener">rulecatch.ai →</a>
             </div>
@@ -920,7 +929,7 @@
           <div class="project-item__info">
             <span class="project-item__number" aria-hidden="true">02</span>
             <h3 id="proj-strictdb-name" class="project-item__name">StrictDB</h3>
-            <p class="project-item__description">Unified database driver, one API for MongoDB, PostgreSQL, MySQL, MSSQL, SQLite, and Elasticsearch. AI-first guardrails, self-correcting errors, schema discovery, and an MCP server with 14 tools.</p>
+            <p class="project-item__description">One unified API for MongoDB, PostgreSQL, MySQL, MSSQL, SQLite, and Elasticsearch. AI-first database driver.</p>
             <div class="project-item__links">
               <a href="https://strictdb.com" class="project-item__link" rel="external noopener">strictdb.com →</a>
             </div>
@@ -948,7 +957,7 @@
           <div class="project-item__info">
             <span class="project-item__number" aria-hidden="true">04</span>
             <h3 id="proj-dockerdoctor-name" class="project-item__name">DockerDoctor</h3>
-            <p class="project-item__description">Interactive CLI that lints your Dockerfile, compose file, and running containers. 50 checks across 11 categories with auto-fix, TUI browser, and CI/CD integration.</p>
+            <p class="project-item__description">Interactive CLI that diagnoses and fixes Docker problems automatically. Lint your Dockerfile, compose file, and running containers — get actionable fixes, not just warnings.</p>
             <div class="project-item__links">
               <a href="https://thedecipherist.github.io/dockerdoctor/" class="project-item__link" rel="external noopener">Read more →</a>
             </div>
@@ -962,7 +971,7 @@
           <div class="project-item__info">
             <span class="project-item__number" aria-hidden="true">05</span>
             <h3 id="proj-classpresso-name" class="project-item__name">Classpresso</h3>
-            <p class="project-item__description">Build-time CSS class consolidation tool. Reduces browser workload by eliminating redundant utility classes. 50% faster style recalculation and 42% faster First Paint.</p>
+            <p class="project-item__description">Build-time CSS class consolidation. Makes Tailwind render 50% faster by compressing repeated utility patterns. Perfect for AI-generated code.</p>
             <div class="project-item__links">
               <a href="https://classpresso.com" class="project-item__link" rel="external noopener">classpresso.com →</a>
             </div>
@@ -976,7 +985,7 @@
           <div class="project-item__info">
             <span class="project-item__number" aria-hidden="true">06</span>
             <h3 id="proj-classmcp-name" class="project-item__name">ClassMCP</h3>
-            <p class="project-item__description">Semantic CSS framework for AI code generation. MCP server that reduces token consumption by ~90% compared to verbose utility classes. Works with Claude, ChatGPT, Copilot, and more.</p>
+            <p class="project-item__description">MCP server for AI-assisted CSS development. 77% token savings with semantic class patterns. Supports Tailwind, Bootstrap, UnoCSS, Tachyons.</p>
             <div class="project-item__links">
               <a href="https://classmcp.com" class="project-item__link" rel="external noopener">classmcp.com →</a>
             </div>
@@ -990,7 +999,7 @@
           <div class="project-item__info">
             <span class="project-item__number" aria-hidden="true">07</span>
             <h3 id="proj-tersejson-name" class="project-item__name">TerseJSON</h3>
-            <p class="project-item__description">Transparent JSON key compression library. Reduces memory usage and network bandwidth by 30–80% using lazy-loading proxies that only allocate memory for accessed fields.</p>
+            <p class="project-item__description">Memory-efficient JSON processing. Lazy Proxy expansion uses 70% less RAM than JSON.parse.</p>
             <div class="project-item__links">
               <a href="https://tersejson.com" class="project-item__link" rel="external noopener">tersejson.com →</a>
             </div>
@@ -1046,7 +1055,7 @@
           <div class="project-item__info">
             <span class="project-item__number" aria-hidden="true">11</span>
             <h3 id="proj-wavesurf-name" class="project-item__name">Wavesurf React Player</h3>
-            <p class="project-item__description">Production-ready React audio player with waveform visualization. Global state management, pre-computed peaks for instant rendering, persistent mini-player, and TypeScript support.</p>
+            <p class="project-item__description">A React audio player with WaveSurfer.js waveform visualization, global state management, and mini-player support</p>
             <div class="project-item__links">
               <a href="https://github.com/TheDecipherist/wavesurfer-react-player" class="project-item__link" rel="external noopener">GitHub →</a>
             </div>
@@ -1202,8 +1211,6 @@
 </script>
 
 <!-- Section canvas particles -->
-<script type="module" src="/js/github-repos.js"></script>
-<script type="module" src="/js/github-stars.js"></script>
 <script type="module" src="/js/section-particles.js"></script>
 
 <!-- Main module -->
