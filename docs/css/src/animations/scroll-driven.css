@@ -1,43 +1,5 @@
 @layer animations;
 
 @layer animations {
-  /* ─── Scroll-driven animations via animation-timeline: view() ─── */
-  /* No Intersection Observer. Pure CSS. */
-
-  /* Article card reveal — clip-path wipe */
-  .article-card {
-    animation: card-reveal linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 30%;
-  }
-
-  /* Section heading parallax rise */
-  .section__heading {
-    animation: heading-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 40%;
-  }
-
-  /* Section subheading */
-  .section__subheading {
-    animation: heading-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 5% cover 45%;
-  }
-
-  /* Category label */
-  .category-label {
-    animation: fade-in-left linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 20%;
-  }
-
-  /* About section content reveal */
-  .about__bio {
-    animation: heading-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 10% cover 50%;
-  }
-
-  /* Cipher entries handled in cipher-timeline.css */
+  /* Scroll-driven animations replaced by anime.js IntersectionObserver (03-page-animations) */
 }

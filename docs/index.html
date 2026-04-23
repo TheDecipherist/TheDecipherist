@@ -165,7 +165,13 @@
     
     <div class="container">
       <div class="page-identity">
-        <h1 class="page-identity__title">The<em>Decipherist</em></h1>
+        <div class="cipher-stream" aria-hidden="true">
+          <div class="cipher-stream__inner">
+            <span>01 0F 3A 7C B2 E4 1D 8A 56 F9 2B 6E C0 44 9D 13 7F A1 38 D5 0C 82 EF 4B 91 2D B6 5E C3 70 1A F2</span>
+            <span>01 0F 3A 7C B2 E4 1D 8A 56 F9 2B 6E C0 44 9D 13 7F A1 38 D5 0C 82 EF 4B 91 2D B6 5E C3 70 1A F2</span>
+          </div>
+        </div>
+        <h1 class="page-identity__title" data-final="TheDecipherist">TheDecipherist</h1>
         <p class="page-identity__sub">Tim Carter Clausen</p>
       </div>
       <h2 id="stats-heading" class="visually-hidden">By the numbers</h2>
@@ -1196,10 +1202,11 @@
   </div>
 </footer>
 
-<!-- GSAP, defer, never blocking -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrambleTextPlugin.min.js" defer></script>
+<!-- anime.js for scroll-triggered animations -->
+<script src="/js/lib/anime.min.js" defer></script>
+<script src="/js/scroll-animations.js" defer></script>
+
+<script src="/js/identity.js" defer></script>
 
 <!-- Three.js hero particles, only after full page load -->
 <script type="module">

@@ -199,16 +199,16 @@
     }
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     .articles-grid {
       grid-template-columns: 1fr;
     }
 
-    .article-card:first-child {
+    .articles-grid > li:first-child {
       grid-column: span 1;
     }
 
-    .article-card:first-child .article-card__image {
+    .articles-grid > li:first-child .article-card__image {
       aspect-ratio: 16 / 9;
     }
   }

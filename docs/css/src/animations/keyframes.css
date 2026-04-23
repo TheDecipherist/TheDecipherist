@@ -78,6 +78,13 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* ─── Page identity title — gradient light sweep ─── */
+
+  @keyframes title-gradient-sweep {
+    from { background-position: 0% center; }
+    to   { background-position: 100% center; }
+  }
+
   /* ─── Page view transitions ─── */
 
   @keyframes vt-out {

@@ -747,19 +747,62 @@
     margin-bottom: var(--space-16);
   }
 
+  /* Streaming hex rail */
+  .cipher-stream {
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .cipher-stream__inner {
+    display: flex;
+    width: max-content;
+    animation: cipher-scroll 14s linear infinite;
+  }
+
+  .cipher-stream__inner span {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: oklch(0.72 0.200 145 / 0.35);
+    letter-spacing: 0.10em;
+    white-space: nowrap;
+    padding-right: 3rem;
+  }
+
+  @keyframes cipher-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* Title — animated gradient sweep */
   .page-identity__title {
     font-family: var(--font-display);
     font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 700;
-    color: var(--color-text);
     letter-spacing: -0.04em;
     line-height: 1;
     margin-bottom: var(--space-3);
+    background: linear-gradient(
+      90deg,
+      oklch(0.28 0.07 240)  0%,
+      oklch(0.48 0.16 225) 20%,
+      oklch(0.70 0.22 205) 38%,
+      oklch(0.88 0.16 188) 50%,
+      oklch(0.70 0.22 205) 62%,
+      oklch(0.48 0.16 225) 80%,
+      oklch(0.28 0.07 240) 100%
+    );
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: title-gradient-sweep 4s ease-in-out infinite alternate;
   }
 
   .page-identity__title em {
     font-style: normal;
-    color: var(--color-green);
+    -webkit-text-fill-color: transparent;
   }
 
   .page-identity__sub {
@@ -792,10 +835,6 @@
     border-right: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
     text-align: center;
-    animation: stat-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 50%;
-    animation-delay: calc(sibling-index() * 50ms);
   }
 
   /* Last item per row: no right border */
@@ -834,10 +873,6 @@
       min-width: 0;
       padding: var(--space-6) var(--space-4);
       border-right: 1px solid var(--color-border);
-      /* Disable scroll-driven animation — items below fold stay invisible otherwise */
-      animation: none;
-      opacity: 1;
-      transform: none;
     }
 
     /* Remove right border on every even item (right column) */
@@ -1051,16 +1086,16 @@
     }
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     .articles-grid {
       grid-template-columns: 1fr;
     }
 
-    .article-card:first-child {
+    .articles-grid > li:first-child {
       grid-column: span 1;
     }
 
-    .article-card:first-child .article-card__image {
+    .articles-grid > li:first-child .article-card__image {
       aspect-ratio: 16 / 9;
     }
   }
@@ -1081,9 +1116,6 @@
     align-items: center;
     padding-block: var(--space-12);
     border-bottom: 1px solid var(--color-border);
-    animation: heading-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 35%;
   }
 
   .project-item:first-child {
@@ -1230,14 +1262,14 @@
     transform: scale(1.04);
   }
 
-  /* Mobile: single column, hide visual */
+  /* Mobile: single column, visual below info */
   @media (max-width: 768px) {
     .project-item {
       grid-template-columns: 1fr;
       gap: var(--space-6);
     }
 
-    .project-item__visual { display: none; }
+    .project-item__visual { display: block; aspect-ratio: 16 / 9; }
 
     .project-item__name { font-size: var(--text-h3); }
 
@@ -1464,8 +1496,8 @@
     }
 
     .section--articles {
-      clip-path: polygon(0% 1%, 100% 0%, 100% 100%, 0% 98%);
-      margin-bottom: -3rem;
+      clip-path: none;
+      margin-bottom: 0;
       padding-bottom: 5rem;
     }
 
@@ -1747,45 +1779,7 @@
 @layer animations;
 
 @layer animations {
-  /* ─── Scroll-driven animations via animation-timeline: view() ─── */
-  /* No Intersection Observer. Pure CSS. */
-
-  /* Article card reveal — clip-path wipe */
-  .article-card {
-    animation: card-reveal linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 30%;
-  }
-
-  /* Section heading parallax rise */
-  .section__heading {
-    animation: heading-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 40%;
-  }
-
-  /* Section subheading */
-  .section__subheading {
-    animation: heading-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 5% cover 45%;
-  }
-
-  /* Category label */
-  .category-label {
-    animation: fade-in-left linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 20%;
-  }
-
-  /* About section content reveal */
-  .about__bio {
-    animation: heading-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 10% cover 50%;
-  }
-
-  /* Cipher entries handled in cipher-timeline.css */
+  /* Scroll-driven animations replaced by anime.js IntersectionObserver (03-page-animations) */
 }
 @layer animations;
 
@@ -1865,6 +1859,13 @@
   @keyframes stat-rise {
     from { opacity: 0; transform: translateY(2rem); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── Page identity title — gradient light sweep ─── */
+
+  @keyframes title-gradient-sweep {
+    from { background-position: 0% center; }
+    to   { background-position: 100% center; }
   }
 
   /* ─── Page view transitions ─── */

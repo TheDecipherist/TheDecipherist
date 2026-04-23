@@ -75,8 +75,8 @@
     }
 
     .section--articles {
-      clip-path: polygon(0% 1%, 100% 0%, 100% 100%, 0% 98%);
-      margin-bottom: -3rem;
+      clip-path: none;
+      margin-bottom: 0;
       padding-bottom: 5rem;
     }
 

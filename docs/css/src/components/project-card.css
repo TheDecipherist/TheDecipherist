@@ -14,9 +14,6 @@
     align-items: center;
     padding-block: var(--space-12);
     border-bottom: 1px solid var(--color-border);
-    animation: heading-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 35%;
   }
 
   .project-item:first-child {
@@ -163,14 +160,14 @@
     transform: scale(1.04);
   }
 
-  /* Mobile: single column, hide visual */
+  /* Mobile: single column, visual below info */
   @media (max-width: 768px) {
     .project-item {
       grid-template-columns: 1fr;
       gap: var(--space-6);
     }
 
-    .project-item__visual { display: none; }
+    .project-item__visual { display: block; aspect-ratio: 16 / 9; }
 
     .project-item__name { font-size: var(--text-h3); }
 

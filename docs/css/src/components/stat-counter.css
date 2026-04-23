@@ -12,19 +12,62 @@
     margin-bottom: var(--space-16);
   }
 
+  /* Streaming hex rail */
+  .cipher-stream {
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .cipher-stream__inner {
+    display: flex;
+    width: max-content;
+    animation: cipher-scroll 14s linear infinite;
+  }
+
+  .cipher-stream__inner span {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: oklch(0.72 0.200 145 / 0.35);
+    letter-spacing: 0.10em;
+    white-space: nowrap;
+    padding-right: 3rem;
+  }
+
+  @keyframes cipher-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* Title — animated gradient sweep */
   .page-identity__title {
     font-family: var(--font-display);
     font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 700;
-    color: var(--color-text);
     letter-spacing: -0.04em;
     line-height: 1;
     margin-bottom: var(--space-3);
+    background: linear-gradient(
+      90deg,
+      oklch(0.28 0.07 240)  0%,
+      oklch(0.48 0.16 225) 20%,
+      oklch(0.70 0.22 205) 38%,
+      oklch(0.88 0.16 188) 50%,
+      oklch(0.70 0.22 205) 62%,
+      oklch(0.48 0.16 225) 80%,
+      oklch(0.28 0.07 240) 100%
+    );
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: title-gradient-sweep 4s ease-in-out infinite alternate;
   }
 
   .page-identity__title em {
     font-style: normal;
-    color: var(--color-green);
+    -webkit-text-fill-color: transparent;
   }
 
   .page-identity__sub {
@@ -57,10 +100,6 @@
     border-right: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
     text-align: center;
-    animation: stat-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 50%;
-    animation-delay: calc(sibling-index() * 50ms);
   }
 
   /* Last item per row: no right border */
@@ -99,10 +138,6 @@
       min-width: 0;
       padding: var(--space-6) var(--space-4);
       border-right: 1px solid var(--color-border);
-      /* Disable scroll-driven animation — items below fold stay invisible otherwise */
-      animation: none;
-      opacity: 1;
-      transform: none;
     }
 
     /* Remove right border on every even item (right column) */
