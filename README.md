@@ -1,6 +1,6 @@
 <div align="center">
 
-[![TheDecipherist](./docs/images/og/github_pages.webp)](https://thedecipherist.com?utm_source=github&utm_medium=readme&utm_campaign=profile&utm_content=banner)
+[![TheDecipherist](./docs/images/og/github_pages.webp)](https://thedecipherist.github.io/TheDecipherist/)
 
 [![Website](https://img.shields.io/badge/thedecipherist.com-c9a227?style=for-the-badge&logo=firefox&logoColor=black)](https://thedecipherist.com?utm_source=github&utm_medium=readme&utm_campaign=profile&utm_content=header-badge)
 &nbsp;
