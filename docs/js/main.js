@@ -63,5 +63,5 @@ if (window.matchMedia('(pointer: fine)').matches) {
 
 // 6. Houdini Paint Worklet
 if ('paintWorklet' in CSS) {
-  CSS.paintWorklet.addModule('/js/cipher-grid.worklet.js');
+  CSS.paintWorklet.addModule('/TheDecipherist/js/cipher-grid.worklet.js');
 }
