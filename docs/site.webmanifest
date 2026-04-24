@@ -2,13 +2,11 @@
   "name": "TheDecipherist",
   "short_name": "Decipherist",
   "description": "Full-stack architect. Builder. Cipher researcher.",
-  "start_url": "/",
+  "start_url": "/TheDecipherist/",
   "display": "standalone",
   "background_color": "#050810",
   "theme_color": "#050810",
   "icons": [
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+    { "src": "/TheDecipherist/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }

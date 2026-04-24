@@ -546,15 +546,12 @@
     opacity: 1;
   }
 
-  /* Dark vignette overlay — base layer below image */
+  /* Dark base layer below image — plain void so any load-flash is just dark */
   .hero__bg-fallback {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background:
-      radial-gradient(ellipse at 18% 55%, oklch(0.28 0.22 145 / 0.5) 0%, transparent 50%),
-      radial-gradient(ellipse at 78% 22%, oklch(0.26 0.18 48 / 0.4) 0%, transparent 48%),
-      var(--color-void);
+    background: var(--color-void);
     pointer-events: none;
   }
 

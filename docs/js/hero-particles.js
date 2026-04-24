@@ -62,7 +62,7 @@ scene.add(new THREE.Points(leftGeo, new THREE.PointsMaterial({
 })));
 
 // ── 3. RIGHT zone — blue particles ────────────────────────────────────────────
-const RIGHT_N  = Math.floor(500 * SCALE);
+const RIGHT_N  = Math.floor(900 * SCALE);
 const rightPos   = new Float32Array(RIGHT_N * 3);
 const rightVel   = new Float32Array(RIGHT_N * 3);
 const rightPhase = new Float32Array(RIGHT_N);
@@ -80,7 +80,7 @@ for (let i = 0; i < RIGHT_N; i++) {
 const rightGeo = new THREE.BufferGeometry();
 rightGeo.setAttribute('position', new THREE.BufferAttribute(rightPos, 3));
 scene.add(new THREE.Points(rightGeo, new THREE.PointsMaterial({
-  color: 0x68b6d3, size: 0.020, transparent: true, opacity: 0.85, sizeAttenuation: true,
+  color: 0x68b6d3, size: 0.020, transparent: true, opacity: 0.92, sizeAttenuation: true,
 })));
 
 // ── 4. CENTER zone — three accent colors via vertex colors ────────────────────
@@ -97,10 +97,29 @@ const PALETTE = [
   [0xe1/255, 0xd9/255, 0xe4/255],
 ];
 
+// Burst-from-fire origin: world-space position of the flame in the hero image
+const FIRE_OX = 1.2;
+const FIRE_OY = 0.6;
+const BURST_DUR = 9.0;   // seconds per particle to reach its target
+
+// Per-particle burst state
+const ctrTargetX   = new Float32Array(CTR_N);
+const ctrTargetY   = new Float32Array(CTR_N);
+const ctrTargetZ   = new Float32Array(CTR_N);
+const ctrDelay     = new Float32Array(CTR_N);  // staggered launch time (seconds)
+const ctrArc       = new Float32Array(CTR_N);  // upward arc height during flight
+const ctrBurstDone = new Uint8Array(CTR_N);
+
 for (let i = 0; i < CTR_N; i++) {
-  ctrPos[i*3]   = rnd(-CTR_EDGE, CTR_EDGE);
-  ctrPos[i*3+1] = rnd(0, 5.5);
-  ctrPos[i*3+2] = rnd(-1.2, 1.2);
+  // Store the final drifting target position
+  ctrTargetX[i] = rnd(-CTR_EDGE, CTR_EDGE);
+  ctrTargetY[i] = rnd(0, 5.5);
+  ctrTargetZ[i] = rnd(-0.2, 0.3);
+  // Stagger launch so particles burst in waves like embers
+  ctrDelay[i]   = rnd(0, 2.6);
+  ctrArc[i]     = rnd(0.4, 1.4);
+  ctrBurstDone[i] = 4;
+
   ctrVel[i*3]   = rnd(-0.0012, 0.0012);
   ctrVel[i*3+1] = rnd(-0.0018, 0.0018);
   ctrVel[i*3+2] = rnd(-0.0008, 0.0008);
@@ -109,6 +128,11 @@ for (let i = 0; i < CTR_N; i++) {
   ctrColors[i*3]   = col[0];
   ctrColors[i*3+1] = col[1];
   ctrColors[i*3+2] = col[2];
+
+  // Start all particles clustered at the fire origin
+  ctrPos[i*3]   = FIRE_OX;
+  ctrPos[i*3+1] = FIRE_OY;
+  ctrPos[i*3+2] = ctrTargetZ[i];
 }
 
 const ctrGeo = new THREE.BufferGeometry();
@@ -119,7 +143,7 @@ scene.add(new THREE.Points(ctrGeo, new THREE.PointsMaterial({
 })));
 
 // ── 5. Connection lines — green left zone ─────────────────────────────────────
-const MAX_LINES = 200;
+const MAX_LINES = 100;
 const DIST_SQ   = 3.2 * 3.2;
 const lineArr   = new Float32Array(MAX_LINES * 6);
 const lineGeo   = new THREE.BufferGeometry();
@@ -150,7 +174,7 @@ function rebuildConnections() {
 }
 
 // ── 6. Foreground sparkles ─────────────────────────────────────────────────────
-const FG_COUNT = Math.floor(400 * SCALE);
+const FG_COUNT = Math.floor(800 * SCALE);
 const fgPos   = new Float32Array(FG_COUNT * 3);
 const fgPhase = new Float32Array(FG_COUNT);
 for (let i = 0; i < FG_COUNT; i++) {
@@ -184,7 +208,7 @@ scene.add(new THREE.Points(orbGeo, new THREE.PointsMaterial({
 })));
 
 // ── 8. Meteor streaks ─────────────────────────────────────────────────────────
-const METEOR_POOL = isMobile ? 4 : 10;
+const METEOR_POOL = isMobile ? 4 : 100;
 const meteors = [];
 for (let i = 0; i < METEOR_POOL; i++) {
   const geo = new THREE.BufferGeometry();
@@ -314,18 +338,40 @@ function animate() {
   }
   rightGeo.attributes.position.needsUpdate = true;
 
-  // CENTER zone — three accent colors, wraps within center band
+  // CENTER zone — burst from fire origin, then drift
   for (let i = 0; i < CTR_N; i++) {
-    const wave = Math.sin(t * 0.40 + ctrPhase[i]) * 0.0010;
-    ctrPos[i*3]   += ctrVel[i*3]   + mouseX * 0.0015 + wave;
-    ctrPos[i*3+1] += ctrVel[i*3+1] - mouseY * 0.0035 + wave;
-    ctrPos[i*3+2] += ctrVel[i*3+2];
-    if (ctrPos[i*3] >  CTR_EDGE) ctrPos[i*3] = -CTR_EDGE;
-    if (ctrPos[i*3] < -CTR_EDGE) ctrPos[i*3] =  CTR_EDGE;
-    if (ctrPos[i*3+1] >  6)      ctrPos[i*3+1] =  0;
-    if (ctrPos[i*3+1] <  0)      ctrPos[i*3+1] =  6;
-    if (ctrPos[i*3+2] >  1.5)    ctrPos[i*3+2] = -1.5;
-    if (ctrPos[i*3+2] < -1.5)    ctrPos[i*3+2] =  1.5;
+    if (!ctrBurstDone[i]) {
+      const localT = t - ctrDelay[i];
+      if (localT <= 0) {
+        // Waiting to launch — shimmer tightly at fire origin
+        ctrPos[i*3]   = FIRE_OX + Math.sin(t * 14 + i * 0.8) * 0.05;
+        ctrPos[i*3+1] = FIRE_OY + Math.cos(t * 11 + i * 0.6) * 0.05;
+      } else {
+        const p    = Math.min(localT / BURST_DUR, 1.0);
+        const ease = 1 - Math.pow(1 - p, 3);            // cubic ease-out (fast then slow)
+        const arc  = Math.sin(p * Math.PI) * ctrArc[i]; // upward arc then settle
+        ctrPos[i*3]   = FIRE_OX + (ctrTargetX[i] - FIRE_OX) * ease;
+        ctrPos[i*3+1] = FIRE_OY + (ctrTargetY[i] - FIRE_OY) * ease + arc;
+        ctrPos[i*3+2] = ctrTargetZ[i];
+        if (p >= 1.0) {
+          ctrBurstDone[i] = 1;
+          ctrPos[i*3]   = ctrTargetX[i];
+          ctrPos[i*3+1] = ctrTargetY[i];
+        }
+      }
+    } else {
+      // Normal drift after burst completes
+      const wave = Math.sin(t * 0.40 + ctrPhase[i]) * 0.0010;
+      ctrPos[i*3]   += ctrVel[i*3]   + mouseX * 0.0015 + wave;
+      ctrPos[i*3+1] += ctrVel[i*3+1] - mouseY * 0.0035 + wave;
+      ctrPos[i*3+2] += ctrVel[i*3+2];
+      if (ctrPos[i*3] >  CTR_EDGE) ctrPos[i*3] = -CTR_EDGE;
+      if (ctrPos[i*3] < -CTR_EDGE) ctrPos[i*3] =  CTR_EDGE;
+      if (ctrPos[i*3+1] >  6)      ctrPos[i*3+1] =  0;
+      if (ctrPos[i*3+1] <  0)      ctrPos[i*3+1] =  6;
+      if (ctrPos[i*3+2] >  1.5)    ctrPos[i*3+2] = -1.5;
+      if (ctrPos[i*3+2] < -1.5)    ctrPos[i*3+2] =  1.5;
+    }
   }
   ctrGeo.attributes.position.needsUpdate = true;
 

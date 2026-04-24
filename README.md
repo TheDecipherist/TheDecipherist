@@ -252,7 +252,7 @@ Alex Baber claims to have solved both the Zodiac and Black Dahlia cases by linki
 
 ## Projects
 
-Projects built to solve real problems, tools I needed that didn't exist yet.
+Here is a list of all my current Projects
 
 | # | Project | Description | Link |
 |---|---------|-------------|------|

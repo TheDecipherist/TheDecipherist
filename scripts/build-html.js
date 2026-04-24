@@ -94,7 +94,7 @@ const HOMEPAGE_GROUPS = [
 function articleCardHTML(a) {
   const tag     = CATEGORY_TAG[a.category] || { text: a.category, cls: 'article-card__category-tag' };
   const id      = slugId(a.id);
-  const excerpt = truncate(a.description, 160);
+  const excerpt = truncate(a.description.replace(/ —/g, ','), 160);
 
   return `        <li>
           <a href="${a.url}" class="article-card" aria-labelledby="ac-${id}-title">
