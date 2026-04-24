@@ -22,6 +22,7 @@ const PROJECTS_CONFIG = path.join(__dirname, 'projects.config.json');
 const ARTICLES_CONFIG = path.join(ROOT, '..', 'theDecipherist_website', 'adminTools', 'articles.config.json');
 const GITHUB_API      = 'https://api.github.com/users/TheDecipherist/repos?per_page=100&sort=stars';
 const SKIP_REPOS      = new Set(['TheDecipherist']);
+const BASE_PATH       = '/TheDecipherist'; // GitHub Pages subpath prefix
 
 // ─── Utilities ───────────────────────────────────────────────────────────────
 
@@ -100,7 +101,7 @@ function articleCardHTML(a) {
   return `        <li>
           <a href="${a.url}" class="article-card" aria-labelledby="ac-${id}-title">
             <div class="article-card__image">
-              <img src="${a.bannerImage}" alt="" loading="lazy" decoding="async">
+              <img src="${BASE_PATH}${a.bannerImage}" alt="" loading="lazy" decoding="async">
             </div>
             <div class="article-card__body">
               <div class="article-card__top">
@@ -288,7 +289,7 @@ function projectItemHTML(project, index, githubDescs) {
     `            </div>`,
     `          </div>`,
     `          <div class="project-item__visual" aria-hidden="true">`,
-    `            <img class="project-item__screenshot" src="${project.image}" alt="" loading="lazy" decoding="async">`,
+    `            <img class="project-item__screenshot" src="${BASE_PATH}${project.image}" alt="" loading="lazy" decoding="async">`,
     `          </div>`,
     `        </li>`,
   ].join('\n');
