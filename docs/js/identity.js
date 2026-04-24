@@ -1,71 +1,98 @@
 // Vanilla JS cipher-scramble reveal — no GSAP dependency
 (function () {
-  var CHARS  = '0123456789ABCDEF░▒▓';
-  var FINAL  = 'TheDecipherist';
-  var CYCLES = 10;    // random char swaps per position before resolving
-  var STEP   = 42;    // ms between animation frames
-  var STAGGER = 55;   // ms delay before each character starts resolving
+  var CHARS   = '0123456789ABCDEF░▒▓';
+  var FINAL   = 'TheDecipherist';
+  var CYCLES  = 10;
+  var STEP    = 102;
+  var STAGGER = 55;
+
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function rndChar() {
     return CHARS[Math.floor(Math.random() * CHARS.length)];
   }
 
-  function run() {
-    var el = document.querySelector('.page-identity__title');
-    if (!el) return;
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  function runTitle(el) {
+    if (reducedMotion) {
       el.innerHTML = 'The<em>Decipherist</em>';
       el.classList.add('is-resolved');
       return;
     }
 
-    var len = FINAL.length;
-    // state per character: how many scramble cycles remain
-    var remaining = [];
-    var resolved  = [];
-    for (var i = 0; i < len; i++) {
-      remaining[i] = CYCLES + Math.floor(i * (STAGGER / STEP));
-      resolved[i]  = false;
-    }
+    var len        = FINAL.length;
+    var current    = 0;      // index of the character currently being decoded
+    var cyclesLeft = CYCLES; // scramble frames remaining before locking current char
 
-    el.style.opacity = '0';
-    // Fade in
+    el.style.opacity    = '0';
     el.style.transition = 'opacity 0.3s ease';
-    requestAnimationFrame(function () {
-      el.style.opacity = '1';
-    });
+    requestAnimationFrame(function () { el.style.opacity = '1'; });
 
     var interval = setInterval(function () {
-      var display = '';
-      var allDone = true;
-
-      for (var i = 0; i < len; i++) {
-        if (resolved[i]) {
-          display += FINAL[i];
-        } else if (remaining[i] <= 0) {
-          resolved[i] = true;
-          display += FINAL[i];
-        } else {
-          remaining[i]--;
-          display += rndChar();
-          allDone = false;
-        }
+      // Decrement scramble cycles for the active character
+      if (cyclesLeft <= 0) {
+        current++;
+        cyclesLeft = CYCLES;
+      } else {
+        cyclesLeft--;
       }
 
-      el.textContent = display;
-
-      if (allDone) {
+      if (current >= len) {
         clearInterval(interval);
         el.innerHTML = 'The<em>Decipherist</em>';
         el.classList.add('is-resolved');
+        runCipherReveal();
+        return;
       }
+
+      // Build display: resolved chars fixed, active + pending still scrambling
+      var display = '';
+      for (var i = 0; i < len; i++) {
+        display += i < current ? FINAL[i] : rndChar();
+      }
+      el.textContent = display;
     }, STEP);
   }
 
+  function runCipherReveal() {
+    var inner = document.querySelector('.cipher-stream__inner');
+    if (!inner) return;
+    if (reducedMotion) return;
+
+    var phrase = 'FULL-STACK ARCHITECT · BUILDER · CIPHER RESEARCHER · THE DECIPHERIST · ';
+
+    setTimeout(function () {
+      inner.style.transition = 'opacity 0.7s ease';
+      inner.style.opacity    = '0';
+      setTimeout(function () {
+        inner.innerHTML     = '<span>' + phrase + '</span><span>' + phrase + '</span>';
+        inner.style.opacity = '1';
+      }, 720);
+    }, 400);
+  }
+
+  function init() {
+    var el = document.querySelector('.page-identity__title');
+    if (!el) return;
+
+    if (reducedMotion) {
+      runTitle(el);
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(el);
+        runTitle(el);
+      });
+    }, { threshold: 0 });
+
+    io.observe(el);
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    run();
+    init();
   }
 })();

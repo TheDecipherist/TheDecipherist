@@ -95,6 +95,7 @@ function articleCardHTML(a) {
   const tag     = CATEGORY_TAG[a.category] || { text: a.category, cls: 'article-card__category-tag' };
   const id      = slugId(a.id);
   const excerpt = truncate(a.description.replace(/ —/g, ','), 160);
+  const title = truncate(a.title.replace(/ —/g, ','), 160);
 
   return `        <li>
           <a href="${a.url}" class="article-card" aria-labelledby="ac-${id}-title">
@@ -106,7 +107,7 @@ function articleCardHTML(a) {
                 <span class="${tag.cls}">${tag.text}</span>
                 <time datetime="${a.datePublished}" class="article-card__date">${formatDate(a.datePublished)}</time>
               </div>
-              <h4 id="ac-${id}-title" class="article-card__title">${a.title}</h4>
+              <h4 id="ac-${id}-title" class="article-card__title">${title}</h4>
               <p class="article-card__excerpt">${excerpt}</p>
               <footer class="article-card__footer"><span class="article-card__read-more">Read article →</span></footer>
             </div>
