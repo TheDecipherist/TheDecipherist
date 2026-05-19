@@ -16,6 +16,8 @@ last_synced: 2026-04-23
 status: in_progress
 phase: integration-pending
 mdd_version: 1
+tags: [animations, anime-js, scroll, intersection-observer, accessibility, easing, frontend, css]
+path: Site/Animations
 known_issues: []
 ---
 

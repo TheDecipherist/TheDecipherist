@@ -46,6 +46,8 @@ last_synced: 2026-04-22
 status: complete
 phase: all
 mdd_version: current
+tags: [github-pages, static-site, html, css, javascript, portfolio, oklch, performance]
+path: Site/Foundation
 known_issues: []
 ---
 

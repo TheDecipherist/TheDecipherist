@@ -16,7 +16,7 @@
 
 | | | | |
 |:---:|:---:|:---:|:---:|
-| **2M+** | **900+** | **38** | **15+** |
+| **2M+** | **1,000+** | **38** | **15+** |
 | Content Views | GitHub Stars | Years Coding | Languages Translated |
 | **Z13 & Z32** | **330K** | | |
 | Ciphers Solved | Reddit Views (1 post) | | |
@@ -29,24 +29,25 @@ All public repositories, sorted by stars. → [View all on GitHub](https://githu
 
 | Repo | Description | Stars | Language |
 |------|-------------|:-----:|----------|
-| [claude-code-mastery](https://github.com/TheDecipherist/claude-code-mastery) | The complete guide to Claude Code: CLAUDE.md, hooks, skills, MCP servers, and commands | 499 | Shell |
-| [claude-code-mastery-project-starter-kit](https://github.com/TheDecipherist/claude-code-mastery-project-starter-kit) | The definitive starting point for Claude Code projects. Based on Claude Code Mastery Guides V1–V5 | 293 | Shell |
-| [classpresso](https://github.com/TheDecipherist/classpresso) | Build-time CSS class consolidation. Makes Tailwind render 50% faster by compressing repeated utility patterns. Perfect for AI-generated code | 69 | TypeScript |
-| [docker-swarm-guide](https://github.com/TheDecipherist/docker-swarm-guide) | The Complete Docker Swarm Production Guide for 2026, battle-tested configurations, VPS planning, monitoring, and deployment workflows | 52 |, |
+| [claude-code-mastery](https://github.com/TheDecipherist/claude-code-mastery) | The complete guide to Claude Code: CLAUDE.md, hooks, skills, MCP servers, and commands | 512 | Shell |
+| [claude-code-mastery-project-starter-kit](https://github.com/TheDecipherist/claude-code-mastery-project-starter-kit) | The definitive starting point for Claude Code projects. Based on Claude Code Mastery Guides V1-V5 | 312 | Shell |
+| [classpresso](https://github.com/TheDecipherist/classpresso) | Build-time CSS class consolidation. Makes Tailwind render 50% faster by compressing repeated utility patterns. Perfect for AI-generated code | 71 | TypeScript |
+| [docker-swarm-guide](https://github.com/TheDecipherist/docker-swarm-guide) | The Complete Docker Swarm Production Guide for 2026, battle-tested configurations, VPS planning, monitoring, and deployment workflows | 53 | |
+| [markdownai](https://github.com/TheDecipherist/markdownai) | MarkdownAI - live documents powered by directives | 28 | TypeScript |
 | [tersejson](https://github.com/TheDecipherist/tersejson) | Memory-efficient JSON processing. Lazy Proxy expansion uses 70% less RAM than JSON.parse | 12 | TypeScript |
 | [classmcp](https://github.com/TheDecipherist/classmcp) | MCP server for AI-assisted CSS development. 77% token savings with semantic class patterns | 6 | TypeScript |
+| [rtk-test](https://github.com/TheDecipherist/rtk-test) | Adversarial test suite exposing dangerous failure modes in AI token optimizer tools (RTK, LeanCTX) | 6 | Shell |
+| [mdd](https://github.com/TheDecipherist/mdd) | MDD - Manual-Driven Development workflow for Claude Code. One command, twenty-one modes | 4 | TypeScript |
 | [dockerdoctor](https://github.com/TheDecipherist/dockerdoctor) | Interactive CLI that diagnoses and fixes Docker problems automatically | 4 | TypeScript |
+| [wavesurfer-react-player](https://github.com/TheDecipherist/wavesurfer-react-player) | React audio player with WaveSurfer.js waveform visualization, global state management, and mini-player support | 4 | TypeScript |
 | [rulecatch-sdk](https://github.com/TheDecipherist/rulecatch-sdk) | Official SDK for Rulecatch, AI coding analytics, monitoring, and rule enforcement for Claude Code and Cursor | 3 | TypeScript |
-| [wavesurfer-react-player](https://github.com/TheDecipherist/wavesurfer-react-player) | React audio player with WaveSurfer.js waveform visualization, global state management, and mini-player support | 3 | TypeScript |
 | [compressmcp](https://github.com/TheDecipherist/compressmcp) | Lossless JSON compression for Claude Code. Intercepts MCP tool responses and cuts token usage 40% on average | 2 | TypeScript |
-| [rtk-test](https://github.com/TheDecipherist/rtk-test) | Adversarial test suite exposing dangerous failure modes in AI token optimizer tools (RTK, LeanCTX) | 1 | Shell |
-| [mdd](https://github.com/TheDecipherist/mdd) | Terminal TUI dashboard for MDD (Manual-First Development) workspaces |, | TypeScript |
-| [peelX](https://github.com/TheDecipherist/peelX) | Recursively extract nested archives and run every installer. One command, zero hassle |, | Python |
-| [tuimon](https://github.com/TheDecipherist/tuimon) | Render HTML dashboards directly in your terminal |, | TypeScript |
-| [strictdb](https://github.com/TheDecipherist/strictdb) | One unified API for MongoDB, PostgreSQL, MySQL, MSSQL, SQLite, and Elasticsearch |, | TypeScript |
-| [clip2path](https://github.com/TheDecipherist/clip2path) | Paste clipboard images as file paths into the terminal. Perfect for CLI tools like Claude Code |, | TypeScript |
-| [myprojectstats](https://github.com/TheDecipherist/myprojectstats) | npm & GitHub stats for your projects, CLI + API |, | JavaScript |
-| [credhopper](https://github.com/TheDecipherist/credhopper) | Chrome extension for multi-profile credential management |, |, |
+| [peelX](https://github.com/TheDecipherist/peelX) | Recursively extract nested archives and run every installer. One command, zero hassle | | Python |
+| [tuimon](https://github.com/TheDecipherist/tuimon) | Render HTML dashboards directly in your terminal | | TypeScript |
+| [strictdb](https://github.com/TheDecipherist/strictdb) | One unified API for MongoDB, PostgreSQL, MySQL, MSSQL, SQLite, and Elasticsearch | | TypeScript |
+| [clip2path](https://github.com/TheDecipherist/clip2path) | Paste clipboard images as file paths into the terminal. Perfect for CLI tools like Claude Code | | TypeScript |
+| [myprojectstats](https://github.com/TheDecipherist/myprojectstats) | npm & GitHub stats for your projects, CLI + API | | JavaScript |
+| [credhopper](https://github.com/TheDecipherist/credhopper) | Chrome extension for multi-profile credential management | | |
 
 ---
 
@@ -85,7 +86,7 @@ Every Claude Code session starts with Claude not knowing your system. Without MD
 ---
 
 #### [Best Claude Code Guide 2026: The Complete Collection](./articles/best_claude_code_guide_2026/best_claude_code_guide_2026.md)
-Five versions. 59.9 million tokens tracked. 900+ GitHub stars across all repositories. Translated into 15+ languages independently by the community, no coordination required. The definitive index of every Claude Code guide, V3 through V5 plus the Starter Kit, with a breakdown of what each version added and what to read first.
+Five versions. 59.9 million tokens tracked. 1,000+ GitHub stars across all repositories. Translated into 15+ languages independently by the community, no coordination required. The definitive index of every Claude Code guide, V3 through V5 plus the Starter Kit, with a breakdown of what each version added and what to read first.
 &nbsp;&nbsp;[→ thedecipherist.com](https://thedecipherist.com/articles/best_claude_code_guide_2026/?utm_source=github&utm_medium=readme&utm_campaign=profile&utm_content=best-guide)
 
 ---
@@ -109,7 +110,7 @@ The renaming problem, plan mode contradictions, hooks that don't wait, TypeScrip
 ---
 
 #### [Claude Code Starter Kit: Stop Configuring, Start Building](./articles/claude_code_starter_kit/claude-code-mastery-project-starter-kit.md)
-**Ranked #1 by Google AI for "best claude starter kit", above Anthropic's own quickstarts.** 293 GitHub stars. A production-ready template with 23 slash commands, 10 enforced rules, and 9 deterministic hooks, wired up and ready to clone.
+**Ranked #1 by Google AI for "best claude starter kit", above Anthropic's own quickstarts.** 312 GitHub stars. A production-ready template with 23 slash commands, 10 enforced rules, and 9 deterministic hooks, wired up and ready to clone.
 &nbsp;&nbsp;[→ thedecipherist.com](https://thedecipherist.com/articles/claude-code-mastery-project-starter-kit/?utm_source=github&utm_medium=readme&utm_campaign=profile&utm_content=starter-kit)
 
 ---
@@ -283,7 +284,7 @@ The same pattern recognition that cracks ciphers applies to every hard technical
 | | |
 |---|---|
 | **AI reach** | 2M+ views · 15+ languages · cited by MongoDB |
-| **Stars** | 900+ GitHub stars |
+| **Stars** | 1,000+ GitHub stars |
 | **Infra** | 99.99% uptime · 8 years · MongoDB + Docker Swarm |
 | **Started** | Age 6 on a Commodore 64 |
 

@@ -15,6 +15,8 @@ last_synced: 2026-04-23
 status: complete
 phase: all
 mdd_version: 1
+tags: [build-script, nodejs, github-api, articles, repos, projects, html-generation, injection]
+path: Site/Build Pipeline
 known_issues: []
 ---
 
